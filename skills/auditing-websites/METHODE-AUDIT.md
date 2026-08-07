@@ -1,6 +1,8 @@
 # Méthode d'audit SEO/GEO complète
 
-> Distillée des audits smartshift.fr (2026-05 → 2026-07) : audit consolidé multi-agents, audit Semrush Piskee, analyse concurrentielle un site concurrent. Chaque audit documente en en-tête sa date, ses outils, son échantillon et ses agents.
+> Distillée de trois audits menés entre mai et juillet 2026 : un audit consolidé
+> multi-agents, un audit outillé avec Semrush, et une analyse concurrentielle.
+> Chaque audit documente en en-tête sa date, ses outils, son échantillon et ses agents.
 
 ## 1. Collecte
 
