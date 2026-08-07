@@ -1,132 +1,132 @@
-# Orchestration de l'audit — agents, contrats, barèmes, livrable
+# Audit orchestration — agents, contracts, scales, deliverable
 
-> Mode d'emploi opérationnel du Process de SKILL.md : qui lance quoi, avec quels prompts, quel format de sortie, comment réconcilier, comment scorer, quoi livrer. Complète METHODE-AUDIT.md (le fond) et REVUE-QUALITE.md (les grilles).
+> Operating manual for the Process in SKILL.md: who launches what, with which prompts, in what output format, how to reconcile, how to score, what to deliver. Companion to AUDIT-METHOD.md (the substance) and QUALITY-REVIEW.md (the grids).
 
-## 1. Dimensionnement & prérequis
+## 1. Sizing & prerequisites
 
-- **Site vitrine ≤ 10 pages** (artisan, commerce local) : 3 collecteurs suffisent (technique+SEO fusionnés, CRO/UX, GEO) ; clusters/cannibalisation/consolidation généralement hors sujet ; ajouter l'annexe SEO local (§10). **Site 30+ pages / e-commerce** : 5 axes complets + concurrents.
-- **Prérequis bloquant** (Process étape 1) : si le domaine est en noindex ou non indexé, NE PAS s'arrêter — livrer l'audit complet avec l'indexabilité comme UNIQUE item P0 et tout le reste explicitement conditionné à sa résolution.
-- **Détection site 100 % JS** (fatal pour un audit curl) : si le HTML brut de la home fait < 5 Ko de texte utile ou que `<body>` est quasi vide avec de gros bundles → basculer la collecte sur Playwright (`page.content()` après networkidle) et le NOTER dans le rapport (la citabilité GEO d'un site 100 % JS est elle-même un finding).
+- **Brochure site ≤ 10 pages** (tradesperson, local business): 3 collectors are enough (technical+SEO merged, CRO/UX, GEO); clusters/cannibalisation/consolidation are usually out of scope; add the local SEO annex (§10). **Site with 30+ pages / e-commerce**: 5 full axes + competitors.
+- **Blocking prerequisite** (Process step 1): if the domain is on noindex or unindexed, keep going — deliver the full audit with indexability as the ONLY P0 item and everything else explicitly conditioned on its resolution.
+- **Detecting a 100 % JS site** (fatal for a curl audit): if the home's raw HTML holds under 5 KB of useful text, or `<body>` is nearly empty next to large bundles → switch collection to Playwright (`page.content()` after networkidle) and NOTE it in the report (the GEO citability of a 100 % JS site is itself a finding).
 
-## 2. Contrat de finding (commun à tous les collecteurs)
+## 2. Finding contract (shared by all collectors)
 
-Chaque collecteur retourne UNIQUEMENT une liste JSON — jamais de conclusion ni de score :
+Each collector returns ONLY a JSON list — no conclusion, no score:
 
 ```json
-{ "id": "seo-03", "axe": "seo", "url": "https://…/page", "claim": "meta description absente",
-  "preuve": "extrait brut (HTML/code/capture) cité",
+{ "id": "seo-03", "axis": "seo", "url": "https://…/page", "claim": "meta description missing",
+  "evidence": "raw excerpt (HTML/code/screenshot) quoted",
   "verify_cmd": "curl -s https://…/page | grep -c 'name=\"description\"'",
-  "palier_propose": "P1", "confidence": "haute|moyenne|basse" }
+  "proposed_tier": "P1", "confidence": "high|medium|low" }
 ```
 
-Le champ **`verify_cmd` est obligatoire** : celui qui affirme fournit la commande exacte qui permet de le contredire. Un finding sans `verify_cmd` rejouable est irrecevable. Les `id` sont **uniques au sein de l'axe** (deux findings partageant un id partageraient silencieusement le même verdict).
+The **`verify_cmd` field is mandatory**: whoever makes the claim supplies the exact command that can refute it. A finding without a replayable `verify_cmd` is inadmissible. `id`s are **unique within the axis** (two findings sharing an id would silently share a verdict).
 
-## 3. Fan-out de collecte
+## 3. Collection fan-out
 
-Lancer en PARALLÈLE (Task tool ou workflow §12), un agent par ligne. Prompts auto-suffisants : chaque agent reçoit le domaine, le chemin du repo (si disponible), le chemin des fichiers de la skill à lire, et le contrat §2.
+Launch in PARALLEL (Task tool or workflow §12), one agent per row. Prompts are self-sufficient: each agent gets the domain, the repo path (when available), the paths of the skill files to read, and the §2 contract.
 
-| Axe | Modèle | Lit | Collecte |
+| Axis | Model | Reads | Collects |
 |---|---|---|---|
-| SEO technique + sémantique | sonnet | METHODE-AUDIT §1,3,4,6 | indexabilité, canonical/hreflang, meta, cannibalisation, maillage, orphelines, sitemap |
-| GEO | haiku | METHODE-AUDIT §5 | llms.txt, négociation markdown, robots+bots IA, RSS, JSON-LD bruts, fraîcheur visible |
-| Design/UX anti-slop | sonnet | REVUE-QUALITE §1 | design read preserve/redesign D'ABORD, captures 390/768/1440, grille quantifiée, hiérarchie réelle des balises dans le code |
-| CRO/copy | sonnet | REVUE-QUALITE §3 | objectif de conversion unique par page, 5 frictions, chaque critique AVEC réécriture proposée |
-| Code/perf/a11y | sonnet | REVUE-QUALITE §2,4,5 + **METHODE-AUDIT §7** | CWV terrain (CrUX URL puis origine) AVANT tout labo ; trace bridée mobile selon le protocole §7.3 sur 2 pages minimum (accueil + contenu) ; images, formulaires (anti-spam), tracking vs politique de confidentialité, audit-local.mjs si repo. **Un poids de bundle n'est pas un finding** (§7.6) et l'INP ne se conclut pas d'une trace de chargement (§7.5) |
-| Concurrent (×N) | haiku | METHODE-AUDIT §9 | fiche normalisée par concurrent (mêmes champs pour tous → tableau comparatif sans retraitement) |
+| Technical + semantic SEO | sonnet | AUDIT-METHOD §1,3,4,6 | indexability, canonical/hreflang, meta, cannibalisation, internal linking, orphans, sitemap |
+| GEO | haiku | AUDIT-METHOD §5 | llms.txt, markdown negotiation, robots + AI bots, RSS, raw JSON-LD, visible freshness |
+| Design/UX anti-slop | sonnet | QUALITY-REVIEW §1 | design read preserve/redesign FIRST, captures at 390/768/1440, quantified grid, real tag hierarchy in the code |
+| CRO/copy | sonnet | QUALITY-REVIEW §3 | single conversion goal per page, 5 frictions, every critique WITH a proposed rewrite |
+| Code/perf/a11y | sonnet | QUALITY-REVIEW §2,4,5 + **AUDIT-METHOD §7** | field CWV (CrUX URL then origin) BEFORE any lab work; throttled mobile trace per the §7.3 protocol on at least 2 pages (home + content); images, forms (anti-spam), tracking versus privacy policy, audit-local.mjs when a repo is available. **Bundle weight is not a finding** (§7.6) and INP cannot be concluded from a load trace (§7.5) |
+| Competitor (×N) | haiku | AUDIT-METHOD §9 | one normalised sheet per competitor (same fields for all → comparison table with no reprocessing) |
 
-Modèles = matrice de routing (haiku pour checklist mécanique, sonnet pour jugement). Externe outillé (Semrush/Ahrefs si licence) en parallèle de tout ça ; sinon §8.
+Models = routing matrix (haiku for mechanical checklists, sonnet for judgement). Run the tooled external audit (Semrush/Ahrefs when licensed) in parallel with all of this; otherwise §8.
 
-**Concurrents non fournis → découverte automatique** (avant les scouts) : recherche web sur les 5-10 requêtes cibles du client (+ variante « {service} {ville} » pour un business local) ; retenir les 3-5 domaines qui reviennent dans les résultats organiques, en EXCLUANT annuaires, marketplaces, médias et agrégateurs (PagesJaunes, Yelp, Amazon, presse) — un concurrent = un site qui vend la même chose à la même cible. Les valider en une ligne chacun dans le rapport (pourquoi retenu).
+**No competitors supplied → automatic discovery** (before the scouts): web search on the client's 5-10 target queries (+ a "{service} {city}" variant for a local business); keep the 3-5 domains recurring in organic results, EXCLUDING directories, marketplaces, media and aggregators (Yelp, Amazon, press) — a competitor is a site selling the same thing to the same audience. Validate each in one line in the report (why it was kept).
 
-**Template de prompt collecteur** :
-> Tu audites {domaine} sur l'axe {axe}. Lis d'abord {chemins des sections skill}. Collecte par curl BRUT (protocole §4) {+ lecture du code dans {repo} si fourni}. Retourne UNIQUEMENT une liste JSON de findings au contrat suivant : {contrat §2}. Interdictions : conclure, scorer, recommander, affirmer « absent » sans citer le HTML brut téléchargé.
+**Collector prompt template**:
+> You are auditing {domain} on the {axis} axis. First read {paths of the skill sections}. Collect via RAW curl (protocol §4) {+ read the code in {repo} if supplied}. Return ONLY a JSON list of findings matching this contract: {contract §2}. Do not conclude, score, recommend, or claim "missing" without quoting the raw HTML you downloaded.
 
-## 4. Protocole curl & réconciliation
+## 4. curl protocol & reconciliation
 
-**Commandes canoniques** (UA identifiable, jamais un fetch qui filtre les `<script>`) :
+**Canonical commands** (identifiable UA, never a fetch that strips `<script>`):
 ```bash
-curl -sIL "$URL"                                    # status, redirections, X-Robots-Tag
-curl -s "$URL" -A "AuditBot (+contact)"             # HTML brut complet
-curl -s "$URL" > page.html   # puis extraction JSON-LD robuste : voir §11 (jamais un grep ligne à ligne — multiligne)
+curl -sIL "$URL"                                    # status, redirects, X-Robots-Tag
+curl -s "$URL" -A "AuditBot (+contact)"             # full raw HTML
+curl -s "$URL" > page.html   # then robust JSON-LD extraction: see §11 (never a line-by-line grep — it is multiline)
 curl -s -H 'Accept: text/markdown' "$URL" -D - -o /dev/null | grep -i 'vary\|content-type'
 curl -s "$DOMAIN/robots.txt" | grep -iE 'gptbot|claudebot|perplexitybot|google-extended|content-signal'
 ```
 
-**Réconciliation (Process étape 3) — mécanique exacte** :
-1. TOUT finding passe au fact-check — par affirmation, JAMAIS par échantillon. Fan-out de l'agent `site-fact-checker` (haiku) par lots de ~10 findings.
-2. Le vérificateur exécute le `verify_cmd` tel quel et rend un verdict : **CONFIRMÉ / INFIRMÉ / INVÉRIFIABLE** + preuve brute.
-3. Divergence collecteur/vérificateur → une 2e vérification par un angle différent (code au lieu de prod, ou inverse) ; toujours divergent = INVÉRIFIABLE.
-4. Seuls les CONFIRMÉS entrent au scoring. Les INFIRMÉS sont archivés AVEC leur preuve en annexe (jurisprudence anti-récidive pour les audits suivants). Les INVÉRIFIABLES sont listés à part, jamais promus.
+**Reconciliation (Process step 3) — exact mechanics**:
+1. EVERY finding goes to fact-check — claim by claim, NEVER by sample. Fan out the `site-fact-checker` agent (haiku) in batches of ~10 findings.
+2. The checker runs the `verify_cmd` as written and returns a verdict: **CONFIRMED / REFUTED / UNVERIFIABLE** + raw evidence.
+3. Collector/checker disagreement → a second check from a different angle (code instead of production, or the reverse); still divergent = UNVERIFIABLE.
+4. Only CONFIRMED findings enter scoring. REFUTED ones are archived WITH their evidence in an annex (anti-recurrence case law for later audits). UNVERIFIABLE ones are listed separately and never promoted.
 
-## 5. Barème de scoring (par axe, /10)
+## 5. Scoring scale (per axis, /10)
 
-| Score | Ancre |
+| Score | Anchor |
 |---|---|
-| 9-10 | Aucun finding P0/P1 confirmé ; l'axe est un différenciateur |
-| 7-8 | Fondations saines, P1 mineurs ; optimisations = gains marginaux |
-| 5-6 | Fonctionnel mais fuites réelles (P1 multiples) ; corrections = gains mesurables |
-| 3-4 | Au moins un P0 confirmé ou P1 systémique ; l'axe sous-performe structurellement |
-| 1-2 | L'axe est cassé (non indexé, formulaire mort, design illisible) |
+| 9-10 | No confirmed P0/P1 finding; the axis is a differentiator |
+| 7-8 | Sound foundations, minor P1s; optimisations bring marginal gains |
+| 5-6 | Functional but with real leaks (multiple P1s); fixes bring measurable gains |
+| 3-4 | At least one confirmed P0 or a systemic P1; the axis structurally underperforms |
+| 1-2 | The axis is broken (not indexed, dead form, unreadable design) |
 
-- **Score potentiel** = plafond RÉALISTE compte tenu du domaine (autorité, budget, périmètre offre) — pas le maximum théorique. Un domaine neuf plafonne à ~7 en SEO à 6 mois quoi qu'on fasse.
-- **Blocage principal** = LE finding qui empêche de monter d'un palier (un seul par axe).
-- Seuil KD : domaine neuf OU faible autorité (peu de référents, trafic 100 % marque) → KD ≤ 20 d'abord ; la règle suit l'autorité réelle, pas l'âge du domaine.
+- **Potential score** = the REALISTIC ceiling for this domain (authority, budget, offer scope) — not the theoretical maximum. A new domain caps around 7 on SEO at 6 months whatever is done.
+- **Main blocker** = THE finding preventing a move up one tier (exactly one per axis).
+- KD threshold: new domain OR low authority (few referring domains, 100 % branded traffic) → KD ≤ 20 first; the rule follows real authority, not domain age.
 
-## 6. Plan d'action — template
+## 6. Action plan — template
 
-Fixes en 4 paliers, chaque item :
-`| # | Item | Axe | Effort (S/M/L) | Impact attendu | Dépend de | Responsable (agence/client) |`
-- P0 = bloquant cette semaine (indexation, formulaire cassé, conformité légale — cette dernière déployée SEULE).
-- Gates client (donnée manquante : prix, témoignage, délai) = items marqués **[GATE CLIENT]**, jamais clos par invention.
-- Roadmap de CONTENU séparée, en phases temporelles (METHODE-AUDIT §2).
+Fixes in 4 tiers, each item:
+`| # | Item | Axis | Effort (S/M/L) | Expected impact | Depends on | Owner (agency/client) |`
+- P0 = blocking this week (indexing, broken form, legal compliance — the last one deployed ON ITS OWN).
+- Client gates (missing data: price, testimonial, lead time) = items marked **[CLIENT GATE]**, never closed by invention.
+- CONTENT roadmap kept separate, in time phases (AUDIT-METHOD §2).
 
-## 7. Livrable
+## 7. Deliverable
 
-UN fichier markdown, dans la langue du client, structure imposée :
-1. **En-tête méta** (exigé par la méthode) : date, outils utilisés, échantillon de pages, agents lancés.
-2. **Executive summary — 3 bullets max** (dont le verdict H1/H2 si le brief est un problème de conversion, cf. §9).
-3. Tableau de scoring par axe (actuel / potentiel / blocage).
-4. Findings confirmés par axe (avec preuves).
-5. Plan d'action 4 paliers + roadmap contenu.
-6. Annexes : faux positifs écartés (avec preuves), invérifiables, fiches concurrents.
+ONE markdown file, in the client's language, with an imposed structure:
+1. **Meta header** (required by the method): date, tools used, page sample, agents launched.
+2. **Executive summary — 3 bullets max** (including the H1/H2 verdict when the brief is a conversion problem, see §9).
+3. Scoring table per axis (current / potential / blocker).
+4. Confirmed findings per axis (with evidence).
+5. 4-tier action plan + content roadmap.
+6. Annexes: discarded false positives (with evidence), unverifiables, competitor sheets.
 
-Destinataire par défaut = le décideur client (vulgarisé, chaque item actionnable) ; version backlog interne sur demande.
+Default audience = the client decision-maker (plain language, every item actionable); internal backlog version on request.
 
-## 8. Fallback sans outil SEO tiers (cas nominal pour un petit client)
+## 8. Fallback with no third-party SEO tool (the normal case for a small client)
 
-- SERP manuelle : 5-10 requêtes cibles en navigation privée (+ variante localisée « {service} {ville} ») ; noter position du site et 3-5 concurrents qui rankent.
-- Volumes : suggestions Google/autocomplete + « recherches associées » + Google Trends en relatif. TOUT étiqueter « directionnel » dans le rapport — jamais présenté comme mesure.
-- La légitimité E-E-A-T (offre réellement vendue) et l'intention de SERP se jugent sans outil : lire la SERP réelle.
+- Manual SERP: 5-10 target queries in private browsing (+ a localised "{service} {city}" variant); record the site's position and the 3-5 competitors that rank.
+- Volumes: Google suggestions/autocomplete + "related searches" + Google Trends in relative terms. Label ALL of it "directional" in the report — never present it as a measurement.
+- E-E-A-T legitimacy (is the offer actually sold) and SERP intent are judged without tooling: read the real SERP.
 
-## 9. Données propriétaires à demander au client (AVANT de conclure)
+## 9. Proprietary data to request from the client (BEFORE concluding)
 
-Accès ou exports : **Search Console** (impressions/clics/requêtes), **Analytics** (trafic, sources, conversions), historique formulaires/appels reçus.
-- Triage du symptôme « pas de leads » : GSC ≈ 0 impressions → **H1 : problème de visibilité** (SEO/technique) ; trafic réel mais 0 conversion → **H2 : problème CRO/confiance**. L'audit pondère les axes selon H1/H2.
-- Accès refusés/inexistants → audit « en aveugle » possible mais le noter en en-tête + le verdict H1/H2 reste une hypothèse.
+Access or exports: **Search Console** (impressions/clicks/queries), **Analytics** (traffic, sources, conversions), history of forms/calls received.
+- Triaging the "no leads" symptom: GSC ≈ 0 impressions → **H1: visibility problem** (SEO/technical); real traffic but 0 conversions → **H2: CRO/trust problem**. The audit weights the axes according to H1/H2.
+- Access refused or non-existent → a "blind" audit is possible, but note it in the header and keep the H1/H2 verdict as a hypothesis.
 
-## 10. Annexe SEO local (artisans, commerces, cabinets)
+## 10. Local SEO annex (tradespeople, shops, practices)
 
-L'axe le plus rentable pour un business local, à ajouter au fan-out (haiku) :
-- **Google Business Profile** : existence, catégorie exacte, avis (volume/note/réponses), photos, posts.
-- **Cohérence NAP** (nom/adresse/téléphone) : site vs GBP vs annuaires (PagesJaunes, Yelp, annuaires métier).
-- **Citations locales** + backlinks locaux (mairie, CCI, associations pro).
-- Sur le site : `LocalBusiness` (sous-type métier exact) avec geo/openingHours, téléphone en `href="tel:"` visible mobile, zone d'intervention explicite, pages villes seulement si ancrées dans le réel local.
+The highest-return axis for a local business, added to the fan-out (haiku):
+- **Google Business Profile**: existence, exact category, reviews (volume/rating/replies), photos, posts.
+- **NAP consistency** (name/address/phone): site versus GBP versus directories (Yelp, trade directories).
+- **Local citations** + local backlinks (town hall, chamber of commerce, trade associations).
+- On the site: `LocalBusiness` (exact trade sub-type) with geo/openingHours, phone as `href="tel:"` visible on mobile, explicit service area, city pages only when anchored in something locally real.
 
-## 11. Validation JSON-LD scriptable
+## 11. Scriptable JSON-LD validation
 
-Le Rich Results Test (web, non scriptable) reste le gate FINAL manuel. En agent :
+The Rich Results Test (web, not scriptable) stays the FINAL manual gate. In an agent:
 ```bash
-# extracteur robuste (JSON-LD multiligne, attributs réordonnés) — jamais un grep ligne à ligne
+# robust extractor (multiline JSON-LD, reordered attributes) — never a line-by-line grep
 curl -s "$URL" | python3 -c '
 import sys, re, json
 html = sys.stdin.read()
 blocks = re.findall(r"<script[^>]*application/ld\+json[^>]*>(.*?)</script>", html, re.S | re.I)
-print(f"{len(blocks)} bloc(s) JSON-LD")
-for i, b in enumerate(blocks): json.loads(b); print(f"bloc {i+1}: JSON valide")'
+print(f"{len(blocks)} JSON-LD block(s)")
+for i, b in enumerate(blocks): json.loads(b); print(f"block {i+1}: valid JSON")'
 ```
-puis vérifier à la main les invariants métier : BreadcrumbList ≥ 2 items, @id Person unique partout, Review/AggregateRating seulement si notes réelles, sous-type LocalBusiness exact.
+then check the business invariants by hand: BreadcrumbList ≥ 2 items, a single Person @id everywhere, Review/AggregateRating only with real ratings, exact LocalBusiness sub-type.
 
-## 12. Audit turnkey (workflow) + fallback
+## 12. Turnkey audit (workflow) + fallback
 
-- **Avec le tool Workflow** : `Workflow({scriptPath: "<skill-dir>/assets/workflows/audit-site.mjs", args: {domain, repoPath?, competitors?, mode: 'full'|'geo-regression'|'pre-launch', compareTo?, small?, skillDir?}})` — chemin absolu obligatoire (pas de tilde) ; `compareTo` = ancien site pour geo-regression ; `small` = site ≤ 10 pages (3 collecteurs, §1) ; `skillDir` = racine de la skill si copie répliquée. Le script couvre collecte + réconciliation (étapes 2-3) et rend des findings DÉJÀ vérifiés ; scoring, revue et plan (étapes 4-6) restent au thread principal — jamais délégués.
-- **Sans le tool Workflow** : Task en parallèle sur les collecteurs du §3 (modèles indiqués), puis fan-out de l'agent `site-fact-checker` par lots de 10, puis §4-§7 au thread principal.
+- **With the Workflow tool**: `Workflow({scriptPath: "<base directory of this skill>/assets/workflows/audit-site.mjs", args: {domain, repoPath?, competitors?, mode: 'full'|'geo-regression'|'pre-launch', compareTo?, small?, skillDir?}})` — the base directory is the one announced when the skill loads; an absolute path is required (no tilde); `compareTo` = the old site for geo-regression; `small` = site ≤ 10 pages (3 collectors, §1); `skillDir` = the skill root when the copy is replicated. The script covers collection + reconciliation (steps 2-3) and returns findings that are ALREADY verified; scoring, review and the plan (steps 4-6) stay in the main thread and are never delegated.
+- **Without the Workflow tool**: parallel Tasks on the §3 collectors (with the listed models), then a `site-fact-checker` fan-out in batches of 10, then §4-§7 in the main thread.

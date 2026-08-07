@@ -1,68 +1,83 @@
 ---
 name: auditing-websites
-description: Use when auditing, reviewing or diagnosing an existing marketing/showcase/e-commerce website — audit SEO ou GEO, "pourquoi je ne ranke pas", "pourquoi je n'ai pas de trafic", trafic quasi 100% marque, positions qui chutent, site invisible sur Google ou jamais cité par ChatGPT/Perplexity, site qui ne convertit pas (pas de leads, pas de devis), cannibalisation ou doublons de pages, consolidation de clusters, audit de maillage interne ou de cocon sémantique / silo topique (pages orphelines, ancres, sens des liens), revue design/qualité avant lancement, audit CRO ou copywriting, analyse concurrentielle, vérifier qu'une refonte n'a rien perdu (SEO ou GEO). Triggers FR - "audite ce site", "audit SEO", "audit de mon site", "revue du site", "personne ne me trouve sur Google", "benchmark concurrent", "check avant mise en ligne", "audit du maillage", "mon cocon fonctionne-t-il". Couvre aussi le poids JS d'un site de contenu et l'opportunité (ou non) d'un changement de framework, toujours adossée à une mesure. Triggers FR - "faut-il migrer vers Astro", "mon site est-il trop lourd", "pourquoi mon site est lent". Triggers EN - "audit this website", "SEO audit", "why no organic traffic", "site review before launch", "internal linking audit", "content silo audit", "should I migrate to Astro", "is my site too heavy".
+description: Use when auditing an existing marketing, showcase or e-commerce website. Branches - no organic visibility (SEO audit, "personne ne me trouve sur Google"), never cited by ChatGPT or Perplexity (GEO audit), site that does not convert (CRO audit), cannibalised or duplicate pages, internal linking or semantic silo audit, pre-launch quality review, competitor benchmark, verifying a redesign lost no SEO or GEO, site too slow or too JS-heavy ("faut-il migrer vers Astro"). FR and EN.
 ---
 
-# Auditing websites (méthode Smartshift 2026)
+# Auditing websites
 
 ## Overview
 
-Méthode d'audit multi-axes (Design/UX, Code, SEO, GEO, CRO) éprouvée sur smartshift.fr et un site concurrent du même secteur : croiser un audit externe outillé (Semrush ou équivalent — fallback sans outil : `ORCHESTRATION.md` §8) avec un audit interne multi-agents, **réconcilier factuellement avant de conclure**, scorer par axe, prioriser en 4 paliers. Le différenciateur de la méthode est la réconciliation : les agents et outils produisent des faux positifs récurrents, aucune conclusion sans preuve rejouée.
+A multi-axis audit (Design/UX, Code, SEO, GEO, CRO): cross a tooled external audit with an internal multi-agent one, **reconcile** them, score per axis, then prioritise into four tiers.
 
-L'axe Design/UX inclut la **couche animation (GSAP) et vidéo (Remotion)** quand le site en a une. Un audit ne l'écrit pas (ça, c'est la skill jumelle `building-premium-sites`), mais il la **juge** comme n'importe quelle qualité : `prefers-reduced-motion` respecté (accessibilité WCAG 2.3.3), vidéos réellement rendues et servies en 200 (une `.mp4` non rendue = bloc 404, blocage pre-launch), impact CLS/LCP des animations d'entrée, gating `navigator.webdriver` pour que les captures QA restent déterministes. « Pas de rapport entre un audit et GSAP/Remotion » est faux : c'est un axe d'audit, pas une tâche de build.
+**Reconciliation** is the word this skill turns on. Tools and agents both produce recurring false positives; a claim becomes a finding once its `verify_cmd` has been replayed by `site-fact-checker`, never before.
+
+**Short on time, with checks outstanding?** The deliverable still ships, carrying the CONFIRMED findings **alone**. Everything else goes to an appendix named "signals collected, verdict pending": no score, no priority, no effort or gain estimate. This is not a truncated report. **The sorting IS the deliverable.** An audit that states "51 signals collected, 12 reconciled, 9 confirmed, 3 disproved" sells its method; one that ships 51 raw lines sells a tool export. Put that count in the executive summary: it is what justifies the price.
+
+**Labelling is not reconciling.** A per-row status, a "not verified" mention, a confidence colour code: these look rigorous and let into the deliverable exactly what reconciliation exists to keep out. A committee lifts rows and projects a table; the label does not survive the copy-paste, the claim does.
 
 ## Process
 
-1. **Prérequis** : domaine canonique indexable (pas de noindex, canonical alignés). Sinon : poursuivre l'audit mais l'indexabilité devient l'UNIQUE P0 et tout le reste y est conditionné. Demander les **données propriétaires** (Search Console, Analytics, historique de leads — `ORCHESTRATION.md` §9) pour trancher visibilité (H1) vs conversion (H2).
-2. **Double collecte** : données SEO tierces (volumes, KD, positions — directionnelles, jamais vérité absolue) + audit interne multi-agents en parallèle — axes, modèles, templates de prompts et contrat de finding (`verify_cmd` obligatoire) : `ORCHESTRATION.md` §2-3. Fond méthodologique : `METHODE-AUDIT.md`. Commerce/artisan local → annexe GBP/NAP (`ORCHESTRATION.md` §10).
-3. **Réconciliation factuelle** : TOUT finding passe à l'agent **`site-fact-checker`** (fan-out par lots de 10) — le thread principal ne s'auto-vérifie jamais, et un finding sans verdict CONFIRMÉ est irrecevable au scoring. Mécanique exacte (verdicts, divergences, archivage des faux positifs) : `ORCHESTRATION.md` §4.
-4. **Scoring par axe** : score actuel / score potentiel (plafond réaliste, pas maximum théorique) / blocage principal — barème ancré : `ORCHESTRATION.md` §5. Inclure l'axe CRO si le brief est un problème de conversion.
-5. **Revue qualité** : anti-slop design, revue socratique 7 catégories, CRO copy, images/perf → `REVUE-QUALITE.md`. QA automatisée : `assets/audit-local.mjs` (générique — configurer les variables `AUDIT_*`).
-6. **Plan d'action** : 4 paliers + roadmap de contenu séparée en phases temporelles ; livrable markdown unique à structure imposée (en-tête méta, exec summary 3 bullets, annexe faux positifs) : `ORCHESTRATION.md` §6-7.
+1. **Prerequisites**: an indexable canonical domain (no noindex, canonicals aligned). Otherwise indexability becomes the ONLY P0 and everything else waits on it. Request the **first-party data** (Search Console, Analytics, lead history — `ORCHESTRATION.md` §9) to separate a visibility problem from a conversion one.
+   *Done when*: indexability status is written down, and first-party data is either received or explicitly refused by the client.
+2. **Double collection**: third-party SEO data (directional) plus an internal multi-agent audit in parallel — axes, models, prompt templates and the finding contract (`verify_cmd` required): `ORCHESTRATION.md` §2-3. Method background: `AUDIT-METHOD.md`. Without a third-party SEO tool: `ORCHESTRATION.md` §8. Local trade or retail → GBP/NAP appendix (`ORCHESTRATION.md` §10).
+   *Done when*: every axis in scope has returned its findings, each carrying a `verify_cmd`.
+3. **Reconciliation**: EVERY finding goes to `site-fact-checker` (fan out in batches of 10); the main thread delegates this verification. Exact mechanics: `ORCHESTRATION.md` §4.
+   *Done when*: every finding carries a verdict. Non-CONFIRMED ones go to the false-positive appendix, not to scoring.
+4. **Per-axis scoring**: current score / potential score (realistic ceiling) / main blocker — scale: `ORCHESTRATION.md` §5. Include the CRO axis when the brief is a conversion problem.
+   *Done when*: every axis in scope carries its three values.
+5. **Quality review**: design anti-slop, seven-category socratic review, CRO copy, images and performance → `QUALITY-REVIEW.md`. Automated QA: `assets/audit-local.mjs` (generic — set the `AUDIT_*` variables).
+   *Done when*: the seven socratic categories are through and `audit-local.mjs` has run on all three breakpoints, output attached.
+6. **Action plan**: four tiers plus a phased content roadmap; a single markdown deliverable with an imposed structure: `ORCHESTRATION.md` §6-7.
+   *Done when*: every CONFIRMED finding sits in a tier, and the false-positive appendix is written.
 
-## Audit turnkey (multi-agents)
+## Turnkey audit (multi-agent)
 
-Pour un audit complet, lancer le workflow — la réconciliation y est structurelle (non contournable) :
-`Workflow({ scriptPath: "<skill-dir>/assets/workflows/audit-site.mjs", args: { domain, repoPath?, competitors?, queries?, noCompetitors?, mode: "full" | "geo-regression" | "pre-launch", compareTo?, small?, skillDir? } })`
-(chemin absolu obligatoire — pas de tilde ; concurrents non fournis = **découverts automatiquement** par recherche web sur les requêtes cibles, sauf `noCompetitors: true` ; `skillDir` = racine de la skill si copie répliquée ailleurs)
+For a full audit, run the workflow — reconciliation is structural there:
 
-**`domain` non fourni et cwd = repo d'un site → inférence automatique**, ordre de priorité strict : 1. `CNAME` → 2. `vercel.json`/`netlify.toml` (domains/redirects) → 3. config framework (`astro.config.*` site, `next.config.*` metadataBase/siteUrl) → 4. `package.json` homepage. TOUJOURS annoncer « domaine détecté : X (source : Y) » avant de lancer — auditer le mauvais domaine invalide tout en amont du fact-checking. Plusieurs candidats plausibles (monorepo, staging vs prod) → lister et demander, jamais deviner.
-Il rend des findings DÉJÀ vérifiés ; les étapes 4-6 (scoring, revue, plan) restent au thread principal — jamais déléguées. Sans le tool Workflow : Task en parallèle sur les collecteurs (`ORCHESTRATION.md` §3, modèles indiqués) puis fan-out `site-fact-checker` par lots de 10.
+`Workflow({ scriptPath: "<base directory of this skill>/assets/workflows/audit-site.mjs", args: { domain, repoPath?, competitors?, queries?, noCompetitors?, mode: "full" | "geo-regression" | "pre-launch", compareTo?, small?, skillDir? } })`
+
+The base directory is the one announced when this skill loads. Absolute path required, no tilde. If the skill is replicated elsewhere, pass that same path as `skillDir`. Competitors left unset are discovered automatically, unless `noCompetitors: true`.
+
+**No `domain` given and cwd is a site repo → automatic inference**, in strict order: 1. `CNAME` → 2. `vercel.json` / `netlify.toml` → 3. framework config (`astro.config.*` site, `next.config.*` metadataBase/siteUrl) → 4. `package.json` homepage. Announce "domain detected: X (source: Y)" before launching — auditing the wrong domain invalidates everything upstream of reconciliation. Several plausible candidates (monorepo, staging against production) → list them and ask.
+
+It returns findings already reconciled; steps 4-6 stay with the main thread. Without the Workflow tool: parallel Tasks on the collectors (`ORCHESTRATION.md` §3), then fan out `site-fact-checker` in batches of 10.
 
 ## Quick reference
 
-| Situation | Règle |
+| Situation | Rule |
 |---|---|
-| Pages qui se cannibalisent | Consolider vers 1 URL canonique (celle qui ranke le mieux ou la plus générique) ; **308** pour fusion interne, 301 pour migration structurelle avec mapping écrit AVANT |
-| Page avec ranking actif, même faible | Jamais supprimée sans redirection — priorité absolue |
-| Fichiers des pages retirées | Conservés (rollback + équité), juste sortis du build/menu/sitemap |
-| Nouveau mot-clé | Volume × KD × **légitimité E-E-A-T** (offre réellement vendue, sinon on ne publie pas) ; autorité faible → KD ≤ 20 d'abord |
-| Sommes de volumes | Dédupliquer les recouvrements avant de sommer (sinon surestimation systématique) |
-| Refonte livrée | Workflow `audit-site` en mode **geo-regression** avec `compareTo` (llms.txt, RSS, négociation markdown, JSON-LD) — un site concurrent a tout perdu en refondant |
-| Donnée manquante (témoignage, prix, délai) | **Gate, ne pas fabriquer** : item [GATE CLIENT] en attente, jamais clos par invention |
-| Finding conformité légale (tracking vs politique de confidentialité) | Déployé seul, immédiatement — jamais noyé dans un lot cosmétique |
-| Benchmark concurrent | Méthode 7 points (fiche, sitemap clusterisé, gap analysis vérifiée des DEUX côtés, non-actions justifiées) : `METHODE-AUDIT.md` §9 |
-| Site portant un cocon sémantique (pilier → têtes → filles) | Ne PAS l'auditer avec les règles de maillage génériques : grille dédiée (sens des liens, ≤ 5 sortants, ancres exactes en descente, étanchéité des branches, orphelines à ≤ 2 sauts, fraîcheur des pages « déclencheurs ») + réconciliation du graphe rendu contre le plan de cocon source : `METHODE-AUDIT.md` §6 bis |
-| Landing de conversion d'un silo sous le plancher de 5 liens | **Exception assumée**, pas un finding : 1 seul lien sortant pour ne pas fuiter la conversion. La lister comme exception nommée dans le rapport |
-| Site avec animations (GSAP) ou vidéos (Remotion) | Auditer la couche motion, ne pas l'ignorer : `prefers-reduced-motion` (WCAG 2.3.3), `.mp4` servis en 200 pas 404, CLS/LCP des animations d'entrée, gating `navigator.webdriver`. L'audit la **juge** ; l'écrire = `building-premium-sites`. Détail : `REVUE-QUALITE.md` §6 |
-| Site de contenu qui embarque un runtime UI (React/Vue) sur toutes ses pages | Constat structurel légitime, **jamais un finding sans mesure** : le poids du bundle ne prédit pas l'impact CWV (mesuré : 205 Ko de JS pour 0 ms d'impact LCP). Séquence terrain → labo → attribution → finding. Détail : `METHODE-AUDIT.md` §7 |
-| Question de performance (« mon site est lent ») | Terrain AVANT labo : CrUX URL → CrUX origine → si aucun des deux, c'est un finding d'audience, pas de vitesse. Seuils, protocole de mesure reproductible et grille de décision : `METHODE-AUDIT.md` §7 |
-| Conclure sur la réactivité (INP) depuis une trace de chargement | Impossible : une trace de load ne produit pas d'INP. Terrain CrUX, mesure en interaction, ou écrire « non mesuré ». `METHODE-AUDIT.md` §7.5 |
-| Routing modèles | Collecteurs qui jugent (seo/design/cro/code) = sonnet ; checklists mécaniques (geo/fact-check/scout) = haiku ; scoring et plan = thread principal |
+| Pages cannibalising each other | Consolidate to one canonical URL (the best-ranking or the most generic); **308** for an internal merge, 301 for a structural migration with the mapping written BEFORE |
+| A page with any live ranking, however small | Redirect first, always, before any removal |
+| Files of removed pages | Kept (rollback plus equity), pulled from build, menu and sitemap |
+| **Titles, cluster duplication, orphans, `og:url`** | Four measurements the build does not produce and a third-party tool hides, to run against rendered HTML: **rendered** title ≤ 60 (so source ≤ 47 with a brand template), **boilerplate** rate alongside the mean Jaccard that dilutes it, **editorial** inbound links rather than sitewide ones, `og:url` page by page. Measured figures, defensible thresholds and traps: `AUDIT-METHOD.md` §10 |
+| A new keyword | Volume × KD × **E-E-A-T legitimacy** (an offer actually sold); low authority → KD ≤ 20 first |
+| Summing volumes | Deduplicate overlaps before summing |
+| A delivered redesign | `audit-site` workflow in **geo-regression** mode with `compareTo` (llms.txt, RSS, markdown negotiation, JSON-LD) — a competing site lost all of it in a redesign |
+| Missing data (testimonial, price, lead time) | **Gate**: a [CLIENT GATE] item stays open, closed by the client alone |
+| A legal-compliance finding (tracking against the privacy policy) | Ships on its own, immediately |
+| Competitor benchmark | Seven-point method: `AUDIT-METHOD.md` §9 |
+| A site built on a semantic silo | Its own grid, not the generic internal-linking rules: `AUDIT-METHOD.md` §6 bis |
+| A silo conversion landing under the 5-link floor | A **deliberate exception**, named in the report: a single outbound link, so the conversion does not leak |
+| A site with animations (GSAP) or video (Remotion) | Design/UX axis plus a11y and performance, audited like the rest: `prefers-reduced-motion` (WCAG 2.3.3), `.mp4` served as 200, CLS/LCP of entrance animations, `navigator.webdriver` gating. Detail: `QUALITY-REVIEW.md` §6 |
+| Performance, JS weight, whether to change framework | Field BEFORE lab: CrUX URL → CrUX origin → if neither exists, that is an audience finding. Bundle weight does not predict CWV impact (measured: 205 KB of JS for 0 ms on LCP). Sequence, thresholds and decision grid: `AUDIT-METHOD.md` §7 |
+| Responsiveness (INP) | Measured through interaction or read from CrUX. A load trace produces none: `AUDIT-METHOD.md` §7.5 |
+| Model routing | Collectors that judge (seo/design/cro/code) = sonnet; mechanical checklists (geo/fact-check/scout) = haiku; scoring and plan = main thread |
 
 ## Red flags — STOP
 
-- Conclure depuis un rapport d'agent/outil sans verdict `site-fact-checker` : un finding sans CONFIRMÉ n'entre ni au scoring ni au plan.
-- Promouvoir un INVÉRIFIABLE en finding « probable ».
-- JSON-LD « présent » ≠ valide : BreadcrumbList à 1 item, DefinedTerm hors `<script>` = valeur nulle. Validation scriptable puis Rich Results Test manuel (`ORCHESTRATION.md` §11).
-- Faux positifs de contraste axe / captures à sections vides → artefact `content-visibility:auto`, pas un bug (forcer visible avant scan).
-- Corriger un « défaut » qui est une identité de marque documentée ou un pattern UX fonctionnel (FAQ accordéon + schema) → vérifier le doc de marque avant d'appliquer un ban générique.
+Each row states the correct action; the rationalisation facing it is the one this skill blocks.
 
-| Rationalisation | Réalité |
+| What you do | The rationalisation it blocks |
 |---|---|
-| « Semrush / l'agent le dit, inutile de re-vérifier » | Faux positifs récurrents documentés (JSON-LD « absent » car l'outil filtre les `<script>`, preload ignoré). Chaque affirmation = un verify_cmd rejoué. |
-| « J'ai vérifié 3 claims, le reste doit être bon » | La réconciliation se fait par affirmation, jamais par échantillon. |
-| « Je rédige le rapport d'abord, je vérifierai ensuite » | Rédiger d'abord ancre les conclusions fausses. Vérification AVANT scoring et plan. |
-| « L'animation (GSAP) / la vidéo (Remotion), c'est pas le périmètre d'un audit » | Faux. Reduced-motion = accessibilité (WCAG 2.3.3), `.mp4` 404 = blocage pre-launch, animations d'entrée = CLS/LCP, gating webdriver = captures déterministes. Un audit ne l'écrit pas, il la juge — c'est un axe Design/UX + a11y + perf. |
+| A finding enters scoring **after** its CONFIRMED verdict. The rest go to the false-positive appendix. | "The tool says so, no need to re-check" — documented false positives: JSON-LD "missing" because the tool filters `<script>`, preload ignored. |
+| Reconciliation runs **claim by claim**. | "I checked 3 claims, the rest must be fine." |
+| Verify, then score, then write. | "I'll write first and verify after" — writing first anchors the wrong conclusions. |
+| An UNVERIFIABLE is reported as unverifiable. | "It's probably true, I'll log it as a likely finding." |
+| Out of time: ship the CONFIRMED alone, the rest in a "verdict pending" appendix. | "I label every row 'not verified', that's honest so it's covered" — a per-row status survives neither the copy-paste nor the projector; the claim does. Labelling is not reconciling. |
+| The sorting count goes in the executive summary. | "9 findings for €9,900 is expensive per line" — that pressure is exactly what gets unverified material published. 51 collected, 12 reconciled, 9 confirmed: the sorting is what you sell. |
+| The motion and video layer is audited like every other axis. | "GSAP/Remotion is build work, not audit work" — reduced-motion is WCAG 2.3.3, a 404 on `.mp4` blocks pre-launch. |
+| Validate JSON-LD by script, then Rich Results Test (`ORCHESTRATION.md` §11). | "The `<script type=\"application/ld+json\">` is there, so it's fine" — a BreadcrumbList with one item is worth nothing. |
+| Force sections visible before a contrast scan or a capture. | "The section is empty / contrast fails" — a `content-visibility:auto` artefact. |
+| Check the brand document before applying a generic ban. | "This pattern is a defect" — sometimes it is a documented identity or a working UX pattern (FAQ accordion plus schema). |
 
-Pour un redesign qui suit l'audit : **REQUIRED SUB-SKILL** `design-taste-frontend`. Pour construire ou reconstruire le site : skill `building-premium-sites`.
+For a redesign following the audit: **REQUIRED SUB-SKILL** `design-taste-frontend`. To build or rebuild the site: skill `building-premium-sites`.
