@@ -15,6 +15,14 @@ A multi-axis audit (Design/UX, Code, SEO, GEO, CRO): cross a tooled external aud
 
 **Labelling is not reconciling.** A per-row status, a "not verified" mention, a confidence colour code: these look rigorous and let into the deliverable exactly what reconciliation exists to keep out. A committee lifts rows and projects a table; the label does not survive the copy-paste, the claim does.
 
+## Scope check, before the process
+
+The six steps below produce a full audit. A single question ("why is this page
+not indexed", "is my JSON-LD valid") is answered by running its probe and
+reporting the result, reconciled the same way but without the fan-out, the
+scoring or the deliverable. Reach for the full sequence when the brief is a site,
+not a page.
+
 ## Process
 
 1. **Prerequisites**: an indexable canonical domain (no noindex, canonicals aligned). Otherwise indexability becomes the ONLY P0 and everything else waits on it. Request the **first-party data** (Search Console, Analytics, lead history — `ORCHESTRATION.md` §9) to separate a visibility problem from a conversion one.
@@ -80,5 +88,7 @@ Each row states the correct action; the rationalisation facing it is the one thi
 | Validate JSON-LD by script, then Rich Results Test (`ORCHESTRATION.md` §11). | "The `<script type=\"application/ld+json\">` is there, so it's fine" — a BreadcrumbList with one item is worth nothing. |
 | Force sections visible before a contrast scan or a capture. | "The section is empty / contrast fails" — a `content-visibility:auto` artefact. |
 | Check the brand document before applying a generic ban. | "This pattern is a defect" — sometimes it is a documented identity or a working UX pattern (FAQ accordion plus schema). |
+
+When reconciliation disproves a claim in a way that will recur (a tool that reads `<script>` blind, a probe that cannot fail differently), record it with `learn-error` once the refutation is proven. False positives are this skill's raw material: the ones already written down are why the red flags above exist, and the list only keeps its value if new ones reach it.
 
 For a redesign following the audit: **REQUIRED SUB-SKILL** `design-taste-frontend`. To build or rebuild the site: skill `building-premium-sites`.

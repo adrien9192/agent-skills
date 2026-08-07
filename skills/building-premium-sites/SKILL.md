@@ -26,6 +26,13 @@ A method for producing a premium showcase site that is **data-driven, anti AI-sl
 
 The skill is self-contained: everything it needs lives in this folder, and nothing is regenerated from an upstream repository.
 
+## Scope check, before the process
+
+The seven steps below build a site. They are not the route for a one-line change
+to a site already live: a copy fix, a price update, one new city page. For those,
+edit the typed data, run the delivery checks, ship. Reach for the full sequence
+when the work is a new site, a rebuild, or a new page archetype.
+
 ## Process (mandatory order)
 
 1. **Intake**: fill `INTAKE-CLIENT.md`, and run it as an interrogation rather than a form — the `grill-me` skill, one question at a time, each answered before the next. A client rarely knows what they want until someone walks them down the branches: framework, lead-gen type, target cities, which offers are actually sold. A form collects what you thought to ask; grilling collects what they had not thought to say. Ask from the first exchange: domain, jurisdiction, language(s), the pillars and offers actually sold, verifiable measured proof, target cities, lead-gen type, ESP credentials and mailbox host. Lead-gen call: a plain form by default; an interactive audit tool (BLUEPRINT §9 ter) when a diagnostic adds value inside the sales cycle AND there is a maintenance budget.
@@ -41,6 +48,8 @@ The skill is self-contained: everything it needs lives in this folder, and nothi
    *Done when*: every page has been through `humanizer`, and every measured claim carries its source or an open gate. An UNVERIFIABLE stays out of publication.
 6. **SEO/GEO from v1**: static sitemap lastmod, robots plus Content-Signal, `llms.txt` and `llms-full.txt`, `Accept: text/markdown` negotiation (`assets/markdown-negotiation/`), validated JSON-LD (the LocalBusiness subtype of the exact trade, BLUEPRINT §8), 301s for old URLs.
    *Done when*: all six artefacts answer 200 on the preview domain.
+6 bis. **Code review**: `design-taste-frontend` judged the UI and the pre-launch audit judges the delivered site, but neither reads the code. Before deploying, review it adversarially — `architecture-review` on the boundaries and failure modes, or APEX with `-x` when the build introduced server-side logic (forms, audit tool, webhooks).
+   *Done when*: every finding is fixed or written down with the reason it was accepted.
 7. **QA and deployment**: `QA-CHECKLIST.md` before AND after deploy. Canonical commands: `rm -rf .next && npx tsc --noEmit && npx eslint . && npm run build`. Automated QA: copy `../auditing-websites/assets/audit-local.mjs` into `scripts/` and set its `AUDIT_*` variables. At delivery, close the loop: a pre-launch audit via `auditing-websites` (workflow `audit-site`, mode `pre-launch`).
    *Done when*: sections G (production smoke tests) and H (an email actually received) are ticked, and the pre-launch audit comes back with no P0. Tick each on an EXECUTED probe, never on a plausible one: the `proof` skill's falsifier question applies here, and section H exists precisely because a 250 OK from the mail API looks the same whether the message landed in an inbox or in spam.
 
@@ -85,5 +94,7 @@ Each row states the correct action; the rationalisation facing it is the one thi
 | Regenerate `i18n.config.ts` and the bot user agent for this site. | "I'll copy them from another project" — hreflang pointing at pages that do not exist, and a bot identifying as someone else's client. |
 | Deliver after sections G and H of `QA-CHECKLIST.md`. | "The build passes, I can deliver" — only G and H catch an unattached domain and email landing in spam. |
 | Each QA box is ticked on a probe that could have failed. | "The API returned 250 OK, the email works" — that status says the provider accepted the message, not that anyone received it. |
+
+When a defect found during the build generalises beyond this site, record it with `learn-error` once it is reproduced and its fix proven. The 40 traps in `BLUEPRINT.md` §17 each cost hours before being written down; that file only stays worth reading if new ones keep reaching it.
 
 For a redesign: audit what exists first (skill `auditing-websites`, SEO/GEO non-regression check) before rebuilding.
