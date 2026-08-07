@@ -11,6 +11,8 @@ A method for producing a premium showcase site that is **data-driven, anti AI-sl
 
 **Gate** is the word this skill turns on. Any data the client has not supplied — a figure, a testimonial, a price, a length of experience — stays an open item until they supply it.
 
+This gates **proof**, never illustration. A scenario, a persona or a typical case is invented on purpose and reads as such; write those freely, since a page that refuses to illustrate says nothing while staying defensible. The edge is attribution: invent the example, never the source (`EEAT-WRITING.md` §1).
+
 **A gate closes on the client's writing, and nothing else.** Not all "sources" carry the same weight:
 
 | Level of source | Publishable? |

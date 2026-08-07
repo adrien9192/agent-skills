@@ -2,9 +2,31 @@
 
 > Template distilled from full client guides. Replace the `{{...}}` variables with the values from `INTAKE-CLIENT.md`. The FR examples are meant to be transposed into the target language.
 
-## 1. Golden anti-invention rule (outranks everything else)
+## 1. The invention rule (outranks everything else)
 
 No invented proof: never a fabricated statistic, client quote, headline result, price, logo or press mention. A missing proof is not replaced by a vague phrase: **it is removed, or the item stays open pending the client's data**. Always separate {{COMPANY}}'s founding date from {{FOUNDER}}'s experience: "X years of [trade] at [employers]", never "agency for X years" when that is false.
+
+
+### Invention has a place, and a hard edge
+
+An **illustration** is invented by design: a scenario, a persona, a typical case
+("a logistics firm losing three hours a week to manual re-entry"). It shows how
+the thing works, and the reader knows nobody is being quoted. Write these freely.
+Copy with no concrete case is copy nobody finishes, and refusing to illustrate is
+how a page ends up saying nothing at all while every sentence stays defensible.
+
+A **proof** claims something happened: a statistic, a client quote, a headline
+result, a price, a logo, a press mention. Never invented, whatever the pressure.
+
+The edge between them is **attribution**. "A logistics firm typically loses three
+hours a week to manual re-entry" illustrates. "Logistics firms lose 23% of margin
+(McKinsey, 2023)" attributes, and McKinsey published no such thing: the prospect
+who checks finds nothing, and it is the client who answers for misleading
+advertising, not you. Same sentence shape, opposite act.
+
+So: invent the example, never the source. An illustration carries no citation, no
+named third party, and no figure dressed as measured. When it needs one to land,
+what it needs is the client's real number, which is a gate.
 
 ## 2. Voice
 
