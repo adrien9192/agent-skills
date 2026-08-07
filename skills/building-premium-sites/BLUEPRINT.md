@@ -657,6 +657,67 @@ The field set and the submit label are a conversion decision, not a schema. Befo
 
 ---
 
+
+### 11 bis. Accessibility as a legal obligation (France / EU, checked 2026-08)
+
+Accessibility is a delivery criterion in step 4 regardless. Whether it is also a
+**legal** obligation depends on two questions, and getting them wrong in either
+direction costs the client: over-promising sells conformity work nobody owes,
+under-promising leaves them exposed.
+
+**Question 1: does the site conclude a consumer contract online?** That is the
+hinge of the European Accessibility Act (directive 2019/882, applicable since
+**28 June 2025**, transposed by decree 2023-931 into articles D. 412-49 and
+following of the French consumer code). Its scope is a closed list of B2C
+services — e-commerce, consumer banking, electronic communications, audiovisual
+media access, passenger transport, e-books, 112. "E-commerce" is defined as a
+service provided at a consumer's individual request **with a view to concluding a
+consumer contract**. A purely informational showcase site is outside it. A basket,
+an online booking or a contractualised quote flow puts you inside.
+
+**Question 2: what size is the client?** Two independent thresholds:
+- **EAA exemption**: micro-enterprises providing services are exempt entirely,
+  the test being **fewer than 10 staff AND turnover or balance sheet ≤ €2M**. It
+  is a conjunction, not a disjunction.
+- **Article 47 of law 2005-102** (the older RGAA regime, Arcom supervision) binds
+  public bodies, private bodies with a public-service mission, and companies whose
+  **average French turnover over the last three closed financial years exceeds
+  €250M** (decree 2019-768, art. 2). A French subsidiary of a €5bn group billing
+  €180M in France is not caught. Where it applies it covers **all** the company's
+  online services, showcase site included, unlike the EAA.
+
+So the common case for these projects — a showcase site for an SME under both
+thresholds — carries **no statutory accessibility obligation**. Say so plainly
+rather than selling a conformity audit nobody owes. Build to the criteria anyway:
+they are cheap at design time and expensive to retrofit, and the client's own
+customers include people who need them.
+
+**Conformance level.** WCAG **2.1 AA** is what is legally in force, through EN
+301 549 V3.2.1 (March 2021), rendered in France as RGAA 4.1.2. EN 301 549 V4.1.1,
+which carries WCAG 2.2, is expected to be cited in the OJEU around late 2026, and
+RGAA 5 is announced for the end of 2026. **Build to 2.2 AA now**: the delta is
+nine criteria, cheap during design and costly to retrofit once it becomes the
+reference.
+
+**Declaration.** Under article 47 the obligations are heavy and formatted: a
+conformity statement on the home page, a per-service accessibility declaration, a
+three-year plan, an annual action plan, a reporting channel and a route to the
+Défenseur des droits. Under the EAA there is no RGAA-style declaration but there
+IS an information duty: the terms or general information must describe **how the
+service meets the accessibility requirements**, kept up to date for the life of
+the service. A disproportionate-burden derogation is not declared, it is argued:
+documented in writing, produced on request, reassessed every five years.
+
+**Do not state penalty amounts to a client without checking.** Public sources
+diverge: the consumer-code route (art. R. 451-4) points to a fifth-class
+contravention, €7,500 for a legal person, while €50,000 is quoted almost
+everywhere and belongs to the article 47 regime, not the EAA one. Four points
+were unresolved at the time of writing and are worth re-checking before any
+client-facing claim: those amounts, whether EN 301 549 is formally harmonised
+under the EAA (it is harmonised under the public-sector directive 2016/2102), how
+far Arcom's supervision of large private companies reaches, and the consolidated
+state of the €250M threshold.
+
 ## 12. Images
 
 - **Stock**: Pexels / Unsplash / Wikimedia Commons (free for commercial use). Download the original then convert to **WebP** (sharp): `resize(1200,800,{fit:'cover'}).webp({quality:80})`. ~1200px. Keep the source URL for traceability.

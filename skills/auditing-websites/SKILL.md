@@ -64,6 +64,7 @@ It returns findings already reconciled; steps 4-6 stay with the main thread. Wit
 | A delivered redesign | `audit-site` workflow in **geo-regression** mode with `compareTo` (llms.txt, RSS, markdown negotiation, JSON-LD) — a competing site lost all of it in a redesign |
 | Missing data (testimonial, price, lead time) | **Gate**: a [CLIENT GATE] item stays open, closed by the client alone |
 | A legal-compliance finding (tracking against the privacy policy) | Ships on its own, immediately |
+| An accessibility finding | Severity depends on whether the site is in scope: the European Accessibility Act covers services concluding a consumer contract online and exempts micro-enterprises, while the older French article 47 regime binds companies above €250M average French turnover. A showcase site for an SME under both is a quality finding, not a legal one. Criteria and thresholds: `building-premium-sites/BLUEPRINT.md` §11 bis |
 | Competitor benchmark | Seven-point method: `AUDIT-METHOD.md` §9. When it shows the site captures none of the competitive queries ("alternative to X", "X vs Y"), that is a finding, and the fix belongs to the `competitors` skill |
 | A site built on a semantic silo | Its own grid, not the generic internal-linking rules: `AUDIT-METHOD.md` §6 bis |
 | A silo conversion landing under the 5-link floor | A **deliberate exception**, named in the report: a single outbound link, so the conversion does not leak |
