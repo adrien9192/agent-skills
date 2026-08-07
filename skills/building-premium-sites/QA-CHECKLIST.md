@@ -54,6 +54,12 @@
 - [ ] www → apex redirect (Vercel toggle) — optional
 
 ## G. Production smoke tests (curl)
+
+> Run at least one of these from outside your own network. A DNS entry that only
+> resolves on your machine, or a firewall rule that only you pass, looks identical
+> to a working site from your desk. `auditing-websites/assets/kitesurf.mjs content <url>`
+> does that without a local browser, and renders the JS while it is there.
+
 - [ ] `https://{{DOMAIN}}/` → 200
 - [ ] A sample of every page type (pillar, offer, city, legacy, blog, dated blog) → 200
 - [ ] 301 redirects → 308 to the right target

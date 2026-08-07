@@ -7,6 +7,7 @@
 - **Brochure site ≤ 10 pages** (tradesperson, local business): 3 collectors are enough (technical+SEO merged, CRO/UX, GEO); clusters/cannibalisation/consolidation are usually out of scope; add the local SEO annex (§10). **Site with 30+ pages / e-commerce**: 5 full axes + competitors.
 - **Blocking prerequisite** (Process step 1): if the domain is on noindex or unindexed, keep going — deliver the full audit with indexability as the ONLY P0 item and everything else explicitly conditioned on its resolution.
 - **Detecting a 100 % JS site** (fatal for a curl audit): if the home's raw HTML holds under 5 KB of useful text, or `<body>` is nearly empty next to large bundles → switch collection to Playwright (`page.content()` after networkidle) and NOTE it in the report (the GEO citability of a 100 % JS site is itself a finding).
+  Two ways to render it: local Playwright, or `assets/kitesurf.mjs content <url>`, which runs Cloudflare's Browser Run from outside your network and needs no local browser. The free tier allows one request per 10 seconds and 10 minutes of browser time per day, so it suits a handful of pages and an outside vantage point, never a 40-page sweep — that stays with Playwright.
 
 ## 2. Finding contract (shared by all collectors)
 
