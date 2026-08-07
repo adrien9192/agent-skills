@@ -151,7 +151,34 @@ for (const path of pages) {
     if (consoleErrors.length) errors.push({ path, viewport: viewport.name, consoleErrors });
     if (failedRequests.length) errors.push({ path, viewport: viewport.name, failedRequests });
 
-    report.push({ path, viewport: viewport.name, title, descriptionLength: description.length, canonical });
+    // Design system, measured rather than judged. QUALITY-REVIEW asks for a
+    // quantified grid (fonts in use, tinted palette, heading scale, touch targets)
+    // and nothing produced those numbers: they were left to the eye, which is how
+    // "it looks fine" becomes a finding. These sweeps read computed styles, so a
+    // regression shows up as a different number.
+    const designSystem = await page.evaluate(() => {
+      const fonts = new Set(), tinted = new Set();
+      for (const el of document.querySelectorAll('body *')) {
+        const cs = getComputedStyle(el);
+        if (el.textContent?.trim()) fonts.add(cs.fontFamily.split(',')[0].replace(/["']/g, '').trim());
+        const m = /rgba?\((\d+), ?(\d+), ?(\d+)/.exec(cs.color);
+        if (m) {
+          const [r, g, b] = [+m[1], +m[2], +m[3]];
+          // Greys carry no brand: keep only what is actually tinted.
+          if (Math.max(r, g, b) - Math.min(r, g, b) > 12) tinted.add(cs.color);
+        }
+      }
+      const scale = [...new Set([...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map((h) => {
+        const cs = getComputedStyle(h);
+        return `${h.tagName}:${Math.round(parseFloat(cs.fontSize))}/${cs.fontWeight}`;
+      }))].sort();
+      // 44px is the touch-target floor (WCAG 2.5.8).
+      const smallTargets = [...document.querySelectorAll('a,button,input,select,[role=button]')]
+        .filter((el) => { const r = el.getBoundingClientRect(); return r.width && r.height && (r.width < 44 || r.height < 44); }).length;
+      return { fonts: [...fonts], tintedColours: tinted.size, headingScale: scale, smallTargets };
+    });
+
+    report.push({ path, viewport: viewport.name, title, descriptionLength: description.length, canonical, designSystem });
     await context.close();
   }
 }

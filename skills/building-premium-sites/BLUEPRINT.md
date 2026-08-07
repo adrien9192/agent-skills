@@ -380,6 +380,8 @@ Types `Pillar` (hub) and `Offer` (child). A pillar has: `slug, title, href, icon
 `type Block = {type:'p'|'h2'|'h3'} | {type:'ul',items} | {type:'table',headers,rows} | {type:'faq',items:{q,a}}`. `Article` (rich: cover, tag, date, readingTime, related[]). Dated archives = `LegacyBlogPost { path:'YYYY/MM/DD/slug', slug, date, tag, metaTitle, metaDescription, h1, excerpt, blocks[] }` rendered by the `app/blog/[...slug]` catch-all.
 
 ### 5.5 "Legacy" SEO pages — `lib/legacy/`
+
+Copy taken over from an old site is extracted with `defuddle parse <url> --md`, one URL per line from the old `sitemap.xml`. It is never retyped or paraphrased: that copy carries client facts, and rewriting it reopens a gate that was closed.
 `interface LegacyPage { slug, url, metaTitle, metaDescription, h1, blocks: ({type:'p'|'h2'|'h3'} | {type:'ul',items})[] }`. 1 file per page, **index auto-generated** by scanning the folder (see §13). Rendered by `app/[slug]/page.tsx` (`dynamicParams=false`). Serves keyword pages and **city × speciality pages** (e.g. `agence-{speciality}-{city}`).
 
 > **Regenerate an auto index** (legacy / legacy-blog) after adding files:
@@ -521,6 +523,8 @@ Two families, sized per client:
 
 ## 9 bis. Non-brand acquisition modules (from a competitor analysis, 2026-07 — see `docs/strategy/competitor-analysis-2026-07.md`)
 
+Citation is not recommendation. Self-ranked "best [category]" pages earn AI citations while the answer around them recommends the established players, which is exactly the low-authority profile this section targets. Weight the effort toward off-site consensus (reviews, communities, analysts) and set the client's expectation accordingly: `ai-seo/references/citations-vs-recommendations.md`.
+
 > Observation: a B2B services site quickly captures ~95% brand traffic. Competitors that break through on non-brand queries do it with **programmatic content clusters** + **price transparency** + **personal brand**. Optional modules, sized per client (E-E-A-T gate: only on expertise actually sold).
 
 ### 9 bis.1 Trade glossary (`lib/glossary.ts` + `/glossaire/<term>`)
@@ -626,6 +630,8 @@ A silo tied to a national market stays **deliberately single-language** (like `l
 ---
 
 ## 10. Form & email (Brevo)
+
+The field set and the submit label are a conversion decision, not a schema. Before shipping more than name, email and message, apply the cost-per-field and multi-step rules in `cro/references/form.md`; the scored diagnostic in §9 quater inherits them.
 
 - `components/contact-form.tsx` (client): name/email/company/url/subject/message fields + **honeypot** `_hp` + optional `ville` prop. POST JSON → `/api/contact`.
 - `app/api/contact/route.ts`: in-memory **rate limit** (3/min/IP), honeypot (silently answers ok), validation + per-field `LIMITS`, HTML+text build, **send via Brevo SMTP** (nodemailer) with **Brevo API fallback**. Variables: `BREVO_SMTP_LOGIN/KEY`, `BREVO_SENDER_EMAIL`, `BREVO_TO_EMAIL`, `BREVO_API_KEY` (fallback).

@@ -58,6 +58,7 @@ It returns findings already reconciled; steps 4-6 stay with the main thread. Wit
 | A page with any live ranking, however small | Redirect first, always, before any removal |
 | Files of removed pages | Kept (rollback plus equity), pulled from build, menu and sitemap |
 | **Titles, cluster duplication, orphans, `og:url`** | Four measurements the build does not produce and a third-party tool hides, to run against rendered HTML: **rendered** title ≤ 60 (so source ≤ 47 with a brand template), **boilerplate** rate alongside the mean Jaccard that dilutes it, **editorial** inbound links rather than sitewide ones, `og:url` page by page. Measured figures, defensible thresholds and traps: `AUDIT-METHOD.md` §10 |
+| A bilingual or multi-region site | Hreflang fails as a cluster, not tag by tag: a missing self-reference voids the whole set, a non-reciprocal pair is dropped, and a cross-locale canonical suppresses that locale outright. Rules and codes: `seo-audit/references/international-seo.md` |
 | A new keyword | Volume × KD × **E-E-A-T legitimacy** (an offer actually sold); low authority → KD ≤ 20 first |
 | Summing volumes | Deduplicate overlaps before summing |
 | A delivered redesign | `audit-site` workflow in **geo-regression** mode with `compareTo` (llms.txt, RSS, markdown negotiation, JSON-LD) — a competing site lost all of it in a redesign |

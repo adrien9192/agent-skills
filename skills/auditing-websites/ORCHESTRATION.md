@@ -28,7 +28,7 @@ Launch in PARALLEL (Task tool or workflow §12), one agent per row. Prompts are 
 | Axis | Model | Reads | Collects |
 |---|---|---|---|
 | Technical + semantic SEO | sonnet | AUDIT-METHOD §1,3,4,6 | indexability, canonical/hreflang, meta, cannibalisation, internal linking, orphans, sitemap |
-| GEO | haiku | AUDIT-METHOD §5 | llms.txt, markdown negotiation, robots + AI bots, RSS, raw JSON-LD, visible freshness |
+| GEO | haiku | AUDIT-METHOD §5 | llms.txt, markdown negotiation, robots + AI bots, RSS, raw JSON-LD, visible freshness | Plus one outcome probe: run the client's target queries through ChatGPT, Perplexity and Google AI Overviews and record who gets cited (method: `ai-seo`). It cannot satisfy the falsifier test, so it lands **directional** like §8, never CONFIRMED, and never in scoring.
 | Design/UX anti-slop | sonnet | QUALITY-REVIEW §1 | design read preserve/redesign FIRST, captures at 390/768/1440, quantified grid, real tag hierarchy in the code |
 | CRO/copy | sonnet | QUALITY-REVIEW §3 | single conversion goal per page, 5 frictions, every critique WITH a proposed rewrite |
 | Code/perf/a11y | sonnet | QUALITY-REVIEW §2,4,5 + **AUDIT-METHOD §7** | field CWV (CrUX URL then origin) BEFORE any lab work; throttled mobile trace per the §7.3 protocol on at least 2 pages (home + content); images, forms (anti-spam), tracking versus privacy policy, audit-local.mjs when a repo is available. **Bundle weight is not a finding** (§7.6) and INP cannot be concluded from a load trace (§7.5) |
