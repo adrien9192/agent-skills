@@ -1,6 +1,6 @@
 # agent-skills
 
-Douze skills pour agents de code — Claude Code, Codex, Cursor, et tout runtime compatible avec le standard Agent Skills.
+Treize skills pour agents de code — Claude Code, Codex, Cursor, et tout runtime compatible avec le standard Agent Skills.
 
 Elles ne sont pas théoriques : chacune est née d'un problème rencontré en production sur un parc d'une vingtaine de projets Next.js et Astro, et sert quotidiennement.
 
@@ -18,7 +18,7 @@ cp -R skills/* adaptations/* ~/.claude/skills/
 
 ## Ce que j'ai construit
 
-Neuf skills écrites de zéro. Chacune répond à une question précise : *qu'est-ce qui, dans mon travail, échoue silencieusement ?*
+Dix skills écrites de zéro. Chacune répond à une question précise : *qu'est-ce qui, dans mon travail, échoue silencieusement ?*
 
 ### `verify` — prouver qu'un changement marche
 
@@ -67,6 +67,14 @@ Neuf skills écrites de zéro. Chacune répond à une question précise : *qu'es
 ### `auditing-websites` — auditer un site sur cinq axes
 
 **Ce qu'elle fait.** Design/UX, code, SEO, GEO, CRO. Croise un audit externe outillé et une lecture du dépôt. Branches dédiées : pas de visibilité organique, jamais cité par les IA, site qui ne convertit pas, pages cannibalisées, contrôle de non-régression après refonte.
+
+### `building-premium-sites` — construire un site sans inventer ses chiffres
+
+**Le problème.** Une maquette vide met la pression. Les chiffres, témoignages, prix et années d'ancienneté que le client n'a jamais fournis finissent par être comblés au plausible, et partent en production.
+
+**Ce qu'elle fait.** Impose un **gate** : toute donnée absente reste un item ouvert que seul un écrit du client referme. Un chiffre dicté à l'oral, une page LinkedIn ou un « je vous fais confiance » n'en referment aucun. Couvre l'intake, le choix Astro/Next, le SEO local, le GEO et la QA de déploiement.
+
+**Ce qu'elle change.** Quand la donnée manque, c'est le bloc qui sort de la maquette, pas la vérité qui s'adapte à la maquette.
 
 ---
 
