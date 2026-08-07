@@ -9,7 +9,7 @@ description: Use when auditing an existing marketing, showcase or e-commerce web
 
 A multi-axis audit (Design/UX, Code, SEO, GEO, CRO): cross a tooled external audit with an internal multi-agent one, **reconcile** them, score per axis, then prioritise into four tiers.
 
-**Reconciliation** is the word this skill turns on. Tools and agents both produce recurring false positives; a claim becomes a finding once its `verify_cmd` has been replayed by `site-fact-checker`, never before.
+**Reconciliation** is the word this skill turns on. Tools and agents both produce recurring false positives; a claim becomes a finding once its `verify_cmd` has been replayed by `site-fact-checker`, never before. The command has to be able to **fail differently**, which is the falsifier test from the `proof` skill: a probe that returns the same thing whether the claim holds or not has verified nothing.
 
 **Short on time, with checks outstanding?** The deliverable still ships, carrying the CONFIRMED findings **alone**. Everything else goes to an appendix named "signals collected, verdict pending": no score, no priority, no effort or gain estimate. This is not a truncated report. **The sorting IS the deliverable.** An audit that states "51 signals collected, 12 reconciled, 9 confirmed, 3 disproved" sells its method; one that ships 51 raw lines sells a tool export. Put that count in the executive summary: it is what justifies the price.
 
@@ -55,7 +55,7 @@ It returns findings already reconciled; steps 4-6 stay with the main thread. Wit
 | A delivered redesign | `audit-site` workflow in **geo-regression** mode with `compareTo` (llms.txt, RSS, markdown negotiation, JSON-LD) — a competing site lost all of it in a redesign |
 | Missing data (testimonial, price, lead time) | **Gate**: a [CLIENT GATE] item stays open, closed by the client alone |
 | A legal-compliance finding (tracking against the privacy policy) | Ships on its own, immediately |
-| Competitor benchmark | Seven-point method: `AUDIT-METHOD.md` §9 |
+| Competitor benchmark | Seven-point method: `AUDIT-METHOD.md` §9. When it shows the site captures none of the competitive queries ("alternative to X", "X vs Y"), that is a finding, and the fix belongs to the `competitors` skill |
 | A site built on a semantic silo | Its own grid, not the generic internal-linking rules: `AUDIT-METHOD.md` §6 bis |
 | A silo conversion landing under the 5-link floor | A **deliberate exception**, named in the report: a single outbound link, so the conversion does not leak |
 | A site with animations (GSAP) or video (Remotion) | Design/UX axis plus a11y and performance, audited like the rest: `prefers-reduced-motion` (WCAG 2.3.3), `.mp4` served as 200, CLS/LCP of entrance animations, `navigator.webdriver` gating. Detail: `QUALITY-REVIEW.md` §6 |
@@ -71,6 +71,7 @@ Each row states the correct action; the rationalisation facing it is the one thi
 |---|---|
 | A finding enters scoring **after** its CONFIRMED verdict. The rest go to the false-positive appendix. | "The tool says so, no need to re-check" — documented false positives: JSON-LD "missing" because the tool filters `<script>`, preload ignored. |
 | Reconciliation runs **claim by claim**. | "I checked 3 claims, the rest must be fine." |
+| A `verify_cmd` that cannot fail differently is rewritten before it runs. | "The command returns 200, the claim holds" — a status code looks identical whether the page rendered or redirected to a login. |
 | Verify, then score, then write. | "I'll write first and verify after" — writing first anchors the wrong conclusions. |
 | An UNVERIFIABLE is reported as unverifiable. | "It's probably true, I'll log it as a likely finding." |
 | Out of time: ship the CONFIRMED alone, the rest in a "verdict pending" appendix. | "I label every row 'not verified', that's honest so it's covered" — a per-row status survives neither the copy-paste nor the projector; the claim does. Labelling is not reconciling. |

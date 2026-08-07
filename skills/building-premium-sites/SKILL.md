@@ -28,12 +28,12 @@ The skill is self-contained: everything it needs lives in this folder, and nothi
 
 ## Process (mandatory order)
 
-1. **Intake**: fill `INTAKE-CLIENT.md`. Ask from the first exchange: domain, jurisdiction, language(s), the pillars and offers actually sold, verifiable measured proof, target cities, lead-gen type, ESP credentials and mailbox host. Lead-gen call: a plain form by default; an interactive audit tool (BLUEPRINT §9 ter) when a diagnostic adds value inside the sales cycle AND there is a maintenance budget.
+1. **Intake**: fill `INTAKE-CLIENT.md`, and run it as an interrogation rather than a form — the `grill-me` skill, one question at a time, each answered before the next. A client rarely knows what they want until someone walks them down the branches: framework, lead-gen type, target cities, which offers are actually sold. A form collects what you thought to ask; grilling collects what they had not thought to say. Ask from the first exchange: domain, jurisdiction, language(s), the pillars and offers actually sold, verifiable measured proof, target cities, lead-gen type, ESP credentials and mailbox host. Lead-gen call: a plain form by default; an interactive audit tool (BLUEPRINT §9 ter) when a diagnostic adds value inside the sales cycle AND there is a maintenance budget.
    *Done when*: every field carries either a client value or a named open gate.
 2. **Framework choice (BLUEPRINT §2 bis)**: **Astro by default** for a content site; Next.js when ≥2 switch conditions hold (the lead magnet is a real app, heavy React reuse, Server Components needed, high-cardinality ISR). Make the call fresh each time rather than inheriting it from the last project.
    *Done when*: the decision and its switch conditions are written in the intake, before any initialisation.
 2 bis. **Init**: Astro → `npm create astro@latest` + `npx astro add tailwind vercel sitemap`. Next → `create-next-app`, then apply BLUEPRINT §2-4. Fill `.env` from `assets/env.example`.
-3. **Build**: follow `BLUEPRINT.md`. ALWAYS read: §16 (playbook) + §17 (traps). As the project needs: §5 bis (bilingual or single-language — Astro's i18n fallback is native), §9 (local SEO), §9 bis (off-brand), §9 ter (audit tool), §9 quater (semantic silo), §12 bis (video). Fully data-driven architecture (typed data plus generic components; in Astro, a loader function in `src/content.config.ts`). The equivalence table in §2 bis maps each pattern between Next and Astro.
+3. **Build**: follow `BLUEPRINT.md`. ALWAYS read: §16 (playbook) + §17 (traps). As the project needs: §5 bis (bilingual or single-language — Astro's i18n fallback is native), §9 (local SEO), §9 bis (off-brand acquisition — when that means comparison or "alternative to X" pages, the `competitors` skill owns the format and the honesty rules), §9 ter (audit tool), §9 quater (semantic silo), §12 bis (video). Fully data-driven architecture (typed data plus generic components; in Astro, a loader function in `src/content.config.ts`). The equivalence table in §2 bis maps each pattern between Next and Astro.
    *Done when*: **every page in the §6 inventory renders** from typed data, `npm run build` passes, and every playbook step in §16 is ticked. A page written by hand means the build is unfinished.
 4. **Design**: **REQUIRED SUB-SKILL** `design-taste-frontend` for all UI — handoff: client brief, sector, and the starter's `:root` tokens to retheme, BEFORE writing components. Copy `assets/motion/` (the reduced-motion and webdriver guards are not negotiable; per-brand retuning happens in the `TUNING`/`SELECTORS` blocks at the top of engine.ts).
    *Done when*: the `:root` tokens carry the client's brand and no component hardcodes a colour.
@@ -42,7 +42,7 @@ The skill is self-contained: everything it needs lives in this folder, and nothi
 6. **SEO/GEO from v1**: static sitemap lastmod, robots plus Content-Signal, `llms.txt` and `llms-full.txt`, `Accept: text/markdown` negotiation (`assets/markdown-negotiation/`), validated JSON-LD (the LocalBusiness subtype of the exact trade, BLUEPRINT §8), 301s for old URLs.
    *Done when*: all six artefacts answer 200 on the preview domain.
 7. **QA and deployment**: `QA-CHECKLIST.md` before AND after deploy. Canonical commands: `rm -rf .next && npx tsc --noEmit && npx eslint . && npm run build`. Automated QA: copy `../auditing-websites/assets/audit-local.mjs` into `scripts/` and set its `AUDIT_*` variables. At delivery, close the loop: a pre-launch audit via `auditing-websites` (workflow `audit-site`, mode `pre-launch`).
-   *Done when*: sections G (production smoke tests) and H (an email actually received) are ticked, and the pre-launch audit comes back with no P0.
+   *Done when*: sections G (production smoke tests) and H (an email actually received) are ticked, and the pre-launch audit comes back with no P0. Tick each on an EXECUTED probe, never on a plausible one: the `proof` skill's falsifier question applies here, and section H exists precisely because a 250 OK from the mail API looks the same whether the message landed in an inbox or in spam.
 
 ## Checks before delivery
 
@@ -84,5 +84,6 @@ Each row states the correct action; the rationalisation facing it is the one thi
 | Check the state of the Astro API in BLUEPRINT §2 bis, or in the docs past 2026-07-30 (Astro 7.1.6). | "I'll write the Astro from memory" — plausible dead APIs: `output:'hybrid'`, `<ViewTransitions />`, `@astrojs/tailwind`, `src/content/config.ts`. |
 | Regenerate `i18n.config.ts` and the bot user agent for this site. | "I'll copy them from another project" — hreflang pointing at pages that do not exist, and a bot identifying as someone else's client. |
 | Deliver after sections G and H of `QA-CHECKLIST.md`. | "The build passes, I can deliver" — only G and H catch an unattached domain and email landing in spam. |
+| Each QA box is ticked on a probe that could have failed. | "The API returned 250 OK, the email works" — that status says the provider accepted the message, not that anyone received it. |
 
 For a redesign: audit what exists first (skill `auditing-websites`, SEO/GEO non-regression check) before rebuilding.

@@ -19,7 +19,7 @@ Each collector returns ONLY a JSON list — no conclusion, no score:
   "proposed_tier": "P1", "confidence": "high|medium|low" }
 ```
 
-The **`verify_cmd` field is mandatory**: whoever makes the claim supplies the exact command that can refute it. A finding without a replayable `verify_cmd` is inadmissible. `id`s are **unique within the axis** (two findings sharing an id would silently share a verdict).
+The **`verify_cmd` field is mandatory**: whoever makes the claim supplies the exact command that can refute it. A finding without a replayable `verify_cmd` is inadmissible. `id`s are **unique within the axis** (two findings sharing an id would silently share a verdict). A command that cannot **fail differently** refutes nothing: `curl -o /dev/null -w '%{http_code}'` returns 200 whether the page rendered or redirected to a login. Before accepting a `verify_cmd`, apply the falsifier question from the `proof` skill: *if this claim were false, what would this command have printed instead?* No different output, no usable probe.
 
 ## 3. Collection fan-out
 
