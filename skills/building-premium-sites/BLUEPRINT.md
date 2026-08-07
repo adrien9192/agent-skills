@@ -670,6 +670,8 @@ The field set and the submit label are a conversion decision, not a schema. Befo
 
 ## 12 bis. Remotion explainer videos (zero-runtime pattern) — optional
 
+This section covers packaging and shipping a video. For authoring one, read `remotion-best-practices` before writing the composition: duration derived from props rather than guessed (a hardcoded one ends the mp4 mid-sentence), font loading that fails **silently in the render** and not in the preview, so brand typography degrades to a fallback in the delivered file, and a real caption track (WCAG 1.2.2) where an `aria-label` and a figcaption are not one.
+
 For motion design / explainer video: **never a client-side video animation engine** (Lottie, canvas runtime). Pre-render to mp4:
 
 - A **fully standalone** `remotion/` sub-project (own package.json/tsconfig, excluded from the root tsconfig/eslint), react/react-dom as devDependencies aligned with the site.

@@ -33,7 +33,7 @@ not a page.
    *Done when*: every finding carries a verdict. Non-CONFIRMED ones go to the false-positive appendix, not to scoring.
 4. **Per-axis scoring**: current score / potential score (realistic ceiling) / main blocker — scale: `ORCHESTRATION.md` §5. Include the CRO axis when the brief is a conversion problem.
    *Done when*: every axis in scope carries its three values.
-5. **Quality review**: design anti-slop, seven-category socratic review, CRO copy, images and performance → `QUALITY-REVIEW.md`. Automated QA: `assets/audit-local.mjs` (generic — set the `AUDIT_*` variables).
+5. **Quality review**: design anti-slop, seven-category socratic review, CRO copy, images and performance → `QUALITY-REVIEW.md`. On the accessibility category, carry the WCAG criterion ID on every finding and run the manual pass an automated scan cannot (keyboard-only traversal, screen-reader announcement, measured contrast ratio, 200% zoom): protocol in `accessibility-review`. The criterion ID is also what gives an a11y finding a falsifiable `verify_cmd`, so it enters reconciliation instead of bypassing it. Automated QA: `assets/audit-local.mjs` (generic — set the `AUDIT_*` variables).
    *Done when*: the seven socratic categories are through and `audit-local.mjs` has run on all three breakpoints, output attached.
 6. **Action plan**: four tiers plus a phased content roadmap; a single markdown deliverable with an imposed structure: `ORCHESTRATION.md` §6-7.
    *Done when*: every CONFIRMED finding sits in a tier, and the false-positive appendix is written.
