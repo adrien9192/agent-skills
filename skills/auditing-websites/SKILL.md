@@ -90,6 +90,9 @@ Each row states the correct action; the rationalisation facing it is the one thi
 | Validate JSON-LD by script, then Rich Results Test (`ORCHESTRATION.md` §11). | "The `<script type=\"application/ld+json\">` is there, so it's fine" — a BreadcrumbList with one item is worth nothing. |
 | Force sections visible before a contrast scan or a capture. | "The section is empty / contrast fails" — a `content-visibility:auto` artefact. |
 | Check the brand document before applying a generic ban. | "This pattern is a defect" — sometimes it is a documented identity or a working UX pattern (FAQ accordion plus schema). |
+| Decode HTML entities before measuring a title or a description. | "The rendered length is what the HTML says" — `&#x27;` counts 6 for one apostrophe and `&amp;` 5 for one ampersand. Measured: 15 titles and 3 descriptions reported over budget, all false, on untouched pages. |
+| Count inbound links from **outside** the cluster. | "The orphan check is green" — a new silo whose only inbound links are its own pages passes every per-URL check while receiving nothing from the rest of the site. Measured at 0 external editorial links with a green check. |
+| Probe a feature end to end and assert on the **body**. | "The content type is right, so the feature works" — a path predicate extended without its render dispatch answered `200 text/markdown` with a 404 payload on 28 pages at once. Nothing type-checks a path table. |
 
 When reconciliation disproves a claim in a way that will recur (a tool that reads `<script>` blind, a probe that cannot fail differently), record it with `learn-error` once the refutation is proven. False positives are this skill's raw material: the ones already written down are why the red flags above exist, and the list only keeps its value if new ones reach it.
 

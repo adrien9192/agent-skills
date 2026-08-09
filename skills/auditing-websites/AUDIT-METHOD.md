@@ -224,6 +224,10 @@ Defensible consequence: "the JS hurts responsiveness" **cannot** be concluded fr
 - "Popular" badge on the cheapest tier → the anchor should point at the middle/high tier.
 - Domain still on noindex while the content plan is being written → prerequisite §1.
 - Recommending a framework migration, or any other performance project, without measurement → §7 (the sequence there is defensible).
+- **A capability declared in the routing table but absent from the renderer.** Two files decide one feature: one says which paths qualify, the other says how they render. Wiring the first without the second returns the *right* header on the *wrong* body. Measured: markdown content negotiation answered `200 text/markdown` with a 404 payload on 28 pages at once, because the path predicate had been extended and the render dispatch had not. No build catches it, nothing type-checks a path table. Probe the feature end to end on a URL of every family, and assert on the body, not the header.
+- **Structured data inherits the markup of its source string.** A FAQ answer written in markdown and copied verbatim into a `FAQPage` block publishes `[label](https://url)` inside the schema, and prints it to the reader too when the visible template renders that field as plain text while its siblings go through an inline renderer. Measured on 9 pages of a new cluster plus one long-standing page. Read the JSON-LD *payload*, never just check that the `<script>` exists.
+- **A content template that renders no image at all.** A cluster template with no visual slot produces pages that are invisible to every check: the build passes, orphan and duplication checks pass, and nobody notices for weeks. Measured: 0 images inside `<main>` across five clusters, against 1 on an offer page, 2 on a pillar and 70 on the home. Count images per template family, not per page.
+- **A global regex reused across measurements.** A `/g` regex kept in a variable and reused carries `lastIndex` between calls: the same corpus scored 20 markers then 0 within minutes. Build the regex fresh at each call, and treat any count that changes without the corpus changing as a broken probe, not as a result.
 
 ## 9. Competitor analysis (method proven twice on a competitor in the same sector)
 
@@ -246,6 +250,10 @@ The source title never carries the brand — pages imported from an old CMS ofte
 
 Measured on the audited site (Search Console, 2026-07-31): **40 titles across 92 ranking pages exceeded 60 rendered characters, 29 of them on pages ranking 1 to 20**; 103 titles corrected. That figure is what invalidated the "front-loaded keyword" tolerance in §8.
 
+⚠️ **Decode HTML entities before counting.** The rendered `<title>` and `<meta name="description">` carry entity-encoded text: one apostrophe is `&#x27;` (6 characters), one ampersand is `&amp;` (5). Counting the raw attribute inflates every length that contains them. Measured on one build: **15 titles reported over 60 characters and 3 meta descriptions over 160, all of them false**, on pages nobody had touched. Decode first, then count. This trap fires twice, because the same probe is usually reused for both fields.
+
+The reverse also holds: a source-side count is not the rendered count, so a source measured at 47 can render longer once the brand template is appended. Measure the served HTML, decoded.
+
 ### 10.2 Duplication across a page cluster
 Measure **per cluster**, with city name and demonym neutralised: body Jaccard, title Jaccard, **boilerplate rate** (blocks appearing identically in ≥ 3 pages) and worst pair.
 
@@ -259,6 +267,8 @@ Count inbound links across **all rendered HTML**. Two levels: no inbound link = 
 ⚠️ Third-party tools count **sitewide** links: a page in the menu shows hundreds of inbound links for **zero editorial link**. Measured case: 8 pages reported at 195 inbound links each, none with a link from a page body.
 
 Keep a written, owned allowlist (technical routes, report pages), otherwise it gets reconstructed from memory at every audit.
+
+⚠️ **A cluster can pass the orphan check and still be an island.** A new content silo whose only inbound links come from its own pages satisfies "has an inbound link" on every URL while receiving nothing from the rest of the site. Measured on three silos shipped the same day: `0` editorial inbound links from outside the cluster, orphan check green. Count inbound links **from outside the cluster**, not inbound links in total. A nav or footer entry does not close this: it is the sitewide link the paragraph above already discounts.
 
 ### 10.4 `og:url`
 Check **page by page**, never by sample: an OpenGraph helper that takes no path cannot set it, and a first partial fix then corrects only one page. 36 pages shipped without `og:url` on the audited site (2026-07-30). Next **replaces** the layout's `openGraph` object as soon as a page declares one, so `og:image` must be repeated per page.
