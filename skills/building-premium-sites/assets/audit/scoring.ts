@@ -104,7 +104,7 @@ export function scoreReport(signals: SiteSignals): AuditReport {
     add({ axis: 'seo-geo', severity: 'warning', title: 'Pas de balise canonical', detail: 'Risque de contenu dupliqué aux yeux de Google.' });
   }
   if (seo.jsonLdTypes.length === 0) {
-    add({ axis: 'seo-geo', severity: 'warning', title: 'Aucune donnée structurée (JSON-LD)', detail: 'Sans schéma, ni Google ni les moteurs IA ne comprennent votre entité. Vous restez absent des résultats enrichis.' });
+    add({ axis: 'seo-geo', severity: 'warning', title: 'Aucune donnée structurée (JSON-LD)', detail: 'Sans schéma, vous restez absent des résultats enrichis de Google. Google demande par ailleurs que le balisage corresponde au texte visible de la page.' });
   } else {
     add({ axis: 'seo-geo', severity: 'good', title: `Données structurées présentes (${seo.jsonLdTypes.length} types)`, detail: seo.jsonLdTypes.slice(0, 6).join(', ') });
   }
@@ -114,10 +114,16 @@ export function scoreReport(signals: SiteSignals): AuditReport {
   if (!discovery.robotsTxt) {
     add({ axis: 'seo-geo', severity: 'warning', title: 'robots.txt absent', detail: "Aucune directive d'exploration : comportement des robots non maîtrisé." });
   }
-  if (!discovery.llmsTxt) {
-    add({ axis: 'seo-geo', severity: 'warning', title: 'Pas de fichier llms.txt (GEO)', detail: 'Les moteurs IA (ChatGPT, Perplexity, AI Overviews) ne disposent d’aucun guide de lecture de votre site. Le référencement génératif vous échappe.' });
-  } else {
-    add({ axis: 'seo-geo', severity: 'good', title: 'llms.txt présent (GEO)', detail: 'Votre site guide déjà les moteurs IA.' });
+  // llms.txt : signalé, jamais pénalisé. Google documente que le fichier n'a aucun
+  // effet, positif ou négatif, sur le classement ni sur AI Overviews. Il travaille
+  // dans une autre couche : les agents de code et les clients MCP qui lisent une
+  // documentation — OpenAI, Anthropic et Perplexity en servent un pour leurs propres
+  // docs. Ne pas invoquer ici les études de logs « 515M requêtes » : elles filtrent
+  // sur GPTBot et ClaudeBot, qui sont des crawlers d'ENTRAÎNEMENT, pas les bots de
+  // recherche. Promettre une visibilité IA à un prospect sur ce fichier reste une
+  // affirmation invérifiable — ce que EEAT-WRITING.md §1 interdit.
+  if (discovery.llmsTxt) {
+    add({ axis: 'seo-geo', severity: 'good', title: 'llms.txt présent', detail: 'Vos pages sont exposées en markdown pour les agents de code et les clients MCP qui liraient votre documentation.' });
   }
   if (seo.h1Count === 0) {
     add({ axis: 'seo-geo', severity: 'warning', title: 'Aucun titre H1', detail: 'Le H1 structure la page pour Google et pour l’accessibilité.' });

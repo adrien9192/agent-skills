@@ -158,7 +158,7 @@ Everything below is **verified**. This is what makes the blueprint portable: no 
 | **Inline JSON-LD** | `<script dangerouslySetInnerHTML>` | `<script type="application/ld+json" set:html={JSON.stringify(data)} />`. `set:html` escapes nothing: never inject raw user text there. |
 | **Targeted client JS** | `'use client'` (component granularity) | `client:load` / `client:idle` / `client:visible` / `client:only="react"` directives, or a plain `<script>` inside the `.astro` (bundled and typed by default; `is:inline` to opt out) |
 | **Images** | `next/image` | `astro:assets`: `<Image>` / `<Picture>`, `image.domains` + `image.remotePatterns` for remote |
-| **Tailwind v4** | `@tailwindcss/postcss` | Vite plugin `@tailwindcss/vite` via `npx astro add tailwind`, then `@import "tailwindcss";` in a global CSS. **`@astrojs/tailwind` is deprecated.** |
+| **Tailwind v4** | `@tailwindcss/postcss` | Vite plugin `@tailwindcss/vite` (**pas** `astro add tailwind`, qui pose l'integration depreciee), then `@import "tailwindcss";` in a global CSS. **`@astrojs/tailwind` is deprecated.** |
 | **Vercel deployment** | native | `import vercel from '@astrojs/vercel'` (single import), `isr` and `imageService` options |
 | **Page transitions** | — | `<ClientRouter />` from `astro:transitions` |
 
@@ -183,9 +183,10 @@ adapter: vercel({
 ### Init an Astro project
 
 ```bash
-npm create astro@latest <client> -- --template minimal --typescript strict
+pnpm create astro@latest <client> -- --template minimal --typescript strict
 cd <client>
-npx astro add tailwind vercel sitemap
+pnpm add -D @tailwindcss/vite   # PAS `astro add tailwind` : integration depreciee
+pnpm astro add vercel sitemap
 ```
 
 Then take the §4 design system as is (`@import "tailwindcss";` + the `:root` tokens), it depends on no framework.
@@ -495,11 +496,11 @@ Three measurements no `tsc`/`eslint`/`build` catches, and that a third-party SEO
 - **`check:duplication` — duplication across a city/speciality page cluster.** Measure per cluster, **city and demonym neutralised**: body Jaccard, title Jaccard, **boilerplate rate** (blocks appearing identically in ≥ 3 pages) and worst pair. ⚠️ **Pairwise averaging dilutes boilerplate**: one cluster showed 3.5% mean body Jaccard for **17.7% of blocks copied into ≥ 3 pages** (identical service list from city to city). Count both. Enforceable thresholds: body 15%, titles 15%, boilerplate 5%, worst pair 20%, `exit 1` on breach. Re-run after any city page creation.
 - **Title budget** (see §8 Metadata): measure the rendered title, template included, across every page of the build.
 
-These three checks run **after** `npm run build`, never before: they read the produced HTML.
+These three checks run **after** the build (`pnpm build`, quel que soit le framework), never before: they read the produced HTML.
 
 ### Sitemap / robots / GEO
 - `app/sitemap.ts`: static `LAST_UPDATED` dates (do NOT use `new Date()` = build churn). Includes pillars, published offers, nav, contact, articles, **legacy pages, legacy blog, cities**, legal.
-- `app/robots.txt/route.ts`: `Allow: /` + **Content-Signal** header (`search=yes, ai-input=yes, ai-train=no`).
+- `app/robots.txt/route.ts`: the AI bots named one by one and **grouped by role** — search/citation (`OAI-SearchBot`, `Claude-SearchBot`, `PerplexityBot`), user-fetch (`ChatGPT-User`, `Claude-User`, `Perplexity-User`), classic search (`Googlebot`, `Bingbot`, `Applebot`), training (`GPTBot`, `ClaudeBot`, `anthropic-ai`, `CCBot`, `Google-Extended`) — then `Allow: /` per group and a final `User-agent: *`. **Never one flat list copied from another project**: the vendors split one crawler into three in February 2026, and a blanket `Disallow` quietly opts the client out of ChatGPT and Claude answers. `Google-Extended` is a training/grounding opt-out, not an AI Overviews switch — AI Overviews rides `Googlebot`. Plus the **Content-Signal** header (`search=yes, ai-input=yes, ai-train=no`; the `ai-train` value is the client's editorial call — ask for it, do not inherit it from the last project).
 - `app/llms.txt` (concise) + `app/llms-full.txt` (exhaustive: services, method, definitions, comparisons, FAQ, **local pages, blog archives, cities**). They iterate over the same data → always up to date.
 - **Markdown negotiation** (`proxy.ts`): `Accept: text/markdown` → rewrite to `app/api/markdown` (pass the path via the `x-md-path` header, since a rewrite sees the original URL).
 - **RFC 8288 Link headers** (`next.config.ts`): announce llms.txt / llms-full.txt.
@@ -721,7 +722,7 @@ state of the €250M threshold.
 ## 12. Images
 
 - **Stock**: Pexels / Unsplash / Wikimedia Commons (free for commercial use). Download the original then convert to **WebP** (sharp): `resize(1200,800,{fit:'cover'}).webp({quality:80})`. ~1200px. Keep the source URL for traceability.
-- **Realistic generation** (optional): `scripts/gen-images.cjs` (Playwright + ChatGPT, persistent profile). ULTRA-realistic prompts ("photorealistic commercial photograph", screens "out of focus, no readable text"). ~50 s/image. Convert PNG→WebP with sharp.
+- **Realistic generation** (optional): `scripts/gen-images.cjs` (copie de `assets/gen-images.cjs`, livre par cette skill) (Playwright + ChatGPT, persistent profile). ULTRA-realistic prompts ("photorealistic commercial photograph", screens "out of focus, no readable text"). ~50 s/image. Convert PNG→WebP with sharp.
 - `next/image` everywhere (local = no `remotePatterns`). Always a descriptive `alt`. Dimensions consistent with the file (e.g. 1200×800) to avoid distortion.
 - **Real logos/signage in post-production**: never let an AI generator draw a logo or a shopfront sign (distorted = instant AI tell). Composite the real logo (official file, stored locally) over the generated image (sharp composite), or frame the prompt to exclude any readable signage.
 - Alternate visual types (photo, diagram/SVG, real logo) — a run of too-similar generated illustrations is an AI tell.
@@ -731,7 +732,7 @@ state of the €250M threshold.
 
 ## 12 bis. Remotion explainer videos (zero-runtime pattern) — optional
 
-This section covers packaging and shipping a video. For authoring one, read `remotion-best-practices` before writing the composition: duration derived from props rather than guessed (a hardcoded one ends the mp4 mid-sentence), font loading that fails **silently in the render** and not in the preview, so brand typography degrades to a fallback in the delivered file, and a real caption track (WCAG 1.2.2) where an `aria-label` and a figcaption are not one.
+This section covers packaging and shipping a video. For authoring one, invoke the `remotion-best-practices` skill if available before writing the composition (upstream `remotion-dev/skills` publishes NO licence — not vendored here, see PROVENANCE.tsv): duration derived from props rather than guessed (a hardcoded one ends the mp4 mid-sentence), font loading that fails **silently in the render** and not in the preview, so brand typography degrades to a fallback in the delivered file, and a real caption track (WCAG 1.2.2) where an `aria-label` and a figcaption are not one.
 
 For motion design / explainer video: **never a client-side video animation engine** (Lottie, canvas runtime). Pre-render to mp4:
 
@@ -782,6 +783,7 @@ Bulk content (city pages, articles, SEO pages) is generated by **parallel agents
 
 **Next.js**:
 ```bash
+# Next.js. Pour Astro : rm -rf dist .astro && pnpm astro check. Table complete : SKILL.md §7.
 rm -rf .next            # stale types after removing routes
 npx tsc --noEmit        # 0 errors (ignore possible .next/validator errors → rm -rf .next)
 npx eslint .
@@ -791,10 +793,24 @@ node scripts/audit-local.mjs   # accessibility (axe) — optional
 
 **Astro**:
 ```bash
-npx astro check         # equivalent of tsc --noEmit (types + .astro templates)
-npm run build           # 0 errors; check the number of generated pages
+rm -rf dist .astro      # equivalent Astro du `rm -rf .next`
+pnpm astro check        # equivalent of tsc --noEmit (types + .astro templates)
+pnpm lint               # le linter declare dans package.json (eslint OU biome)
+pnpm build              # 0 errors; check the number of generated pages
 node scripts/audit-local.mjs   # accessibility (axe) — optional
 ```
+
+**TanStack Start** (stack SaaS de `build-site/STACKS.md` §3) :
+```bash
+rm -rf dist .output
+pnpm typecheck
+pnpm lint
+pnpm test
+pnpm build              # 0 errors
+```
+
+Les trois chaines sont la table canonique de `SKILL.md` §7. Lancer celle du framework **en
+vigueur** (SKILL.md §2), jamais celle que cette section listait en premier.
 
 In both cases: **count the generated pages and reconcile them with the expected inventory** (§6). A silent gap is the most frequent symptom of a badly declared route (see traps 32 and 37).
 ⚠️ The **shell may have `errexit`**: a `grep` with no match (exit 1) kills a chained script → use `|| true` or Python.
@@ -838,7 +854,8 @@ npx vercel domains add www.{{DOMAIN}}
 
 1. **Intake**: fill `INTAKE-CLIENT.md` (§1 variables). Gather logo, colours, legal details, Brevo credentials, city/service list, proof/clients.
 2. **Framework choice (§2 bis)**: Astro by default; Next.js if at least two switching conditions hold. Decide BEFORE the first line of code, the arbitration is not redone mid-project. Write the decision and its reason into the intake.
-2 bis. **Init**: Astro → `npm create astro@latest` + `npx astro add tailwind vercel sitemap`. Next → clone `starter/` (or `create-next-app` + §2 design system). In both cases fill `.env` (Brevo, SITE_URL, CONTACT_EMAIL).
+2 bis. **Init**: Astro → `npm create astro@latest` + `pnpm add -D @tailwindcss/vite   # PAS `astro add tailwind` : integration depreciee
+pnpm astro add vercel sitemap`. Next → clone `starter/` (or `create-next-app` + §2 design system). In both cases fill `.env` (Brevo, SITE_URL, CONTACT_EMAIL).
 3. **Theming**: adapt `:root` (colours) + fonts (layout.tsx) to the branding. Logo in `components/logo.tsx` + `/public/brand`.
 4. **Service tree**: fill `lib/catalog.ts` (pillars + offers) from the client's real offering. `published` for phase 1.
 5. **Marketing data**: fill `lib/site.ts` (nav, real proofPoints, faqs, values, clients, tech, footerCities).
@@ -851,7 +868,7 @@ npx vercel domains add www.{{DOMAIN}}
 11. **Legal**: legal notice + privacy policy (aligned with the company, no image) + cookie banner.
 12. **SEO/GEO**: sitemap, robots+Content-Signal, llms.txt/full, markdown negotiation, Link headers, OG image, JSON-LD schemas, **301s** for old URLs.
 13. **Voice**: **humanizer** pass + loanword removal + re-accentuation on ALL content (§13 Python scripts). Apply the **persuasion principles** to CTAs (§7).
-14. **QA**: `rm -rf .next && tsc && eslint && build` 0 errors; a11y audit; visual read-through.
+14. **QA** : la chaine du framework EN VIGUEUR — table par stack dans SKILL.md §7 (Astro : `astro check` + `astro build` ; Next : `rm -rf .next` + `tsc` ; TanStack : `pnpm typecheck`). 0 erreur ; audit a11y ; relecture visuelle.
 15. **Deployment**: `vercel deploy --prod`; **attach the domain**; configure DNS (A/CNAME, remove AAAA, keep MX).
 16. **Email**: authenticate the domain at Brevo + SPF/DKIM/DMARC; test the form end to end.
 17. **Final check**: `QA-CHECKLIST.md` (production smoke tests, indexability, sitemap, form received).
@@ -865,7 +882,7 @@ npx vercel domains add www.{{DOMAIN}}
 3. Em/en dashes banned; do not convert numeric ranges (use "à").
 4. Agent content = French without accents → always re-accentuate (titles included).
 5. Next rewrite + query: the route sees the original URL → pass params via header.
-6. Stale `.next` after removing routes → `rm -rf .next` before tsc/build.
+6. **Next.js uniquement** — stale `.next` after removing routes → `rm -rf .next` before tsc/build. Sur Astro l'equivalent est `rm -rf dist .astro`.
 7. Legacy index: type the getter `(slug: string)`.
 8. Shell `errexit`: a `grep` with no match kills the chain → `|| true` / Python.
 9. **Domain not attached to the Vercel project** → 404 + no SSL (cause n°1 of a "site down" after a DNS migration).
@@ -909,6 +926,7 @@ npx vercel domains add www.{{DOMAIN}}
 
 ### Traps added by the second wave of silos (2026-08)
 41. **A silo sized by copying another silo's shape.** The first silo's page count came from a real keyword study; reusing that number on the next topic is cargo cult. Measured: three briefs issued at "1 pillar + 5 branch heads + 36 children = 42 pages" came back at 13, 8 and 9 pages once the instruction was corrected to *one URL per genuinely distinct intent*, with the merged intents justified in writing. On a live framework the honest answer can be a third of the reference silo. Make the page count a **conclusion of the intent list**, never an input, and demand a "dropped or merged intents" section: it is the part that proves the sorting happened.
+    The quota is also the exact shape Google's spam policy names. **Scaled content abuse** is defined as "many pages [...] generated for the primary purpose of manipulating search rankings and not helping users [...] creating large amounts of unoriginal content that provides little to no value to users, **no matter how it's created**", with "using generative AI tools or other similar tools to generate many pages without adding value" as the first listed example. Filling a page count to hit a number is that sentence, written as a brief. Nothing in Google's documentation caps how many pages a site may publish or forbids pages built from a data table — the policy is about value per page, not volume — so the defence is the intent list and the dropped-intents section, not a smaller number.
 42. **A content silo with no offer page is an encyclopedia.** Measured against a silo that ranks: 7 distinct CTA labels pointing at offer pages *inside* the silo, versus 1 label repeated across 13 pages pointing at `/contact`. The reference silo converts because the cluster contains its own commercial destination and the content pushes to it. Every silo needs at least one offer page built on the same template as its content pages, plus one CTA label per page derived from that page's subject.
 43. **Banning first-person experience to prevent invented statistics also removes the E of E-E-A-T.** Measured with one probe across the same corpus: the ranking silo carries 4.1 first-hand markers per 10 000 words, silos written under a blanket ban carried 0.7 to 1.1. The line is not "no first person", it is: a **stated professional position** is allowed ("we refuse to do X", "in practice the template costs more than the content"), an **invented house statistic** is not ("70 % of our clients do X"). Ground biographical or track-record claims in a written client source and cite where it came from.
 44. **Lifecycle and version facts taken from model memory.** Agents reproduce the calendar they were trained on. Measured on one brief: a report described a framework's LTS landscape as it stood two years earlier, missed the current major entirely, and got every end-of-life date wrong — on pages whose only reason to exist was to deliver a date. Take these from the project's own machine-readable endpoint (`releases.json`, an end-of-life API, the vendor's own support page), cross-check two sources, and write the collection date next to the table.

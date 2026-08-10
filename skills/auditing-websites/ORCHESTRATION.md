@@ -30,6 +30,7 @@ Launch in PARALLEL (Task tool or workflow §12), one agent per row. Prompts are 
 |---|---|---|---|
 | Technical + semantic SEO | sonnet | AUDIT-METHOD §1,3,4,6 | indexability, canonical/hreflang, meta, cannibalisation, internal linking, orphans, sitemap |
 | GEO | haiku | AUDIT-METHOD §5 | llms.txt, markdown negotiation, robots + AI bots, RSS, raw JSON-LD, visible freshness | Plus one outcome probe: run the client's target queries through ChatGPT, Perplexity and Google AI Overviews and record who gets cited (method: `ai-seo`). It cannot satisfy the falsifier test, so it lands **directional** like §8, never CONFIRMED, and never in scoring.
+| | | | **On `llms.txt`, report presence, never a score.** Its absence is not a defect and its presence is not a ranking gain: the falsifier is public — an invented `cats.txt` describing someone's office cats was crawled by PerplexityBot, GPTBot, ClaudeBot and Googlebot, indexed by Google, and recommended by ChatGPT in the same words used to pitch `llms.txt`. "The bots fetched it" and "ChatGPT says it helps" are therefore probes that cannot fail differently, which is exactly what this skill refuses to score.
 | Design/UX anti-slop | sonnet | QUALITY-REVIEW §1 | design read preserve/redesign FIRST, captures at 390/768/1440, quantified grid, real tag hierarchy in the code |
 | CRO/copy | sonnet | QUALITY-REVIEW §3 | single conversion goal per page, 5 frictions, every critique WITH a proposed rewrite |
 | Code/perf/a11y | sonnet | QUALITY-REVIEW §2,4,5 + **AUDIT-METHOD §7** | field CWV (CrUX URL then origin) BEFORE any lab work; throttled mobile trace per the §7.3 protocol on at least 2 pages (home + content); images, forms (anti-spam), tracking versus privacy policy, audit-local.mjs when a repo is available. **Bundle weight is not a finding** (§7.6) and INP cannot be concluded from a load trace (§7.5) |
@@ -50,7 +51,12 @@ curl -sIL "$URL"                                    # status, redirects, X-Robot
 curl -s "$URL" -A "AuditBot (+contact)"             # full raw HTML
 curl -s "$URL" > page.html   # then robust JSON-LD extraction: see §11 (never a line-by-line grep — it is multiline)
 curl -s -H 'Accept: text/markdown' "$URL" -D - -o /dev/null | grep -i 'vary\|content-type'
-curl -s "$DOMAIN/robots.txt" | grep -iE 'gptbot|claudebot|perplexitybot|google-extended|content-signal'
+# robots.txt — resolve GROUPS, never match names. RFC 9309 lets consecutive user-agent
+# lines share the rules below them, so a fixed context window (grep -A3) drops the
+# directive of a grouped block. Output is one '<agent>\t<directive>' pair per agent;
+# classify those by ROLE (AUDIT-METHOD §5): search ≠ training ≠ user-fetch.
+curl -s "$DOMAIN/robots.txt" | awk -f "$SKILL/assets/robots-roles.awk"
+curl -sI "$DOMAIN/robots.txt" | grep -i 'content-signal'   # Content-Signal travels as a response header
 ```
 
 **Reconciliation (Process step 3) — exact mechanics**:

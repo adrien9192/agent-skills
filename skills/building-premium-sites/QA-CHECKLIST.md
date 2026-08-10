@@ -15,10 +15,20 @@
 
 ## B. Code & build
 - [ ] (if Remotion video module) Explainer videos present: `ls public/videos/*.mp4` (otherwise `cd remotion && npm run render:all`)
-- [ ] `rm -rf .next`
-- [ ] `npx tsc --noEmit` → **0 errors** (legacy getters typed `(slug: string)`)
-- [ ] `npx eslint .` → clean
-- [ ] `npm run build` → **0 errors**; number of generated pages adds up (count cities, blog, legacy)
+- [ ] Nettoyage du cache de build **du framework en vigueur** — Astro : `rm -rf dist .astro` · Next : `rm -rf .next` · TanStack : `rm -rf dist .output` (table complete : SKILL.md §7)
+- [ ] **Type-check du framework en vigueur** → **0 erreur** (legacy getters typed `(slug: string)`)
+      · Astro : `pnpm astro check` · Next : `pnpm tsc --noEmit` · TanStack : `pnpm typecheck`
+- [ ] `pnpm lint` → clean (le linter declare dans `package.json`, pas `npx eslint .` en dur :
+      un projet Astro ou TanStack peut utiliser Biome)
+- [ ] **Build du framework en vigueur** → **0 erreur** ; le nombre de pages generees tombe juste
+      (villes, blog, legacy) · Astro : `pnpm build` puis `ls dist` · Next : `pnpm build` ·
+      TanStack : `pnpm build`
+- [ ] `pnpm test` → vert, s'il existe des tests
+
+> Table canonique complete des trois chaines : `SKILL.md` §7. `npx tsc` et `npx eslint .` ne
+> sont PAS des commandes universelles — sur Astro le type-check passe par `astro check`, qui
+> voit les `.astro`, et un projet peut linter avec Biome. Prescrire l'outil plutot que
+> l'intention faisait echouer la checklist sur deux des trois stacks du depot.
 - [ ] (if legacy pages) Auto indexes (`lib/legacy`, `lib/legacy-blog`) regenerated and current
 - [ ] `a{color:inherit}` still inside `@layer base`
 - [ ] Images: `alt` everywhere, dimensions match the real file (no distortion), WebP optimised
@@ -27,7 +37,7 @@
 - [ ] `metadata` (title, description ≤ 160, canonical) on every page
 - [ ] JSON-LD present (Organization+WebSite global; Service/BreadcrumbList/FAQPage per page; BlogPosting; Person)
 - [ ] `sitemap.xml` includes pillars, offers, nav, cities, legacy, blog, archives, legal
-- [ ] `robots.txt`: `Allow: /` + Content-Signal header
+- [ ] `robots.txt`: `Allow: /` + Content-Signal header, AI bots named **by role** (search / user-fetch / training). Probe production, never read the route: `curl -s https://{{DOMAIN}}/robots.txt | grep -icE 'oai-searchbot|claude-searchbot|perplexity-user'` → **3 expected**; `0` means the flat pre-2026 list shipped and the client is opted out of ChatGPT and Claude answers
 - [ ] `llms.txt` + `llms-full.txt` current (they iterate over the data)
 - [ ] Markdown negotiation OK (`curl -H "Accept: text/markdown" https://{{DOMAIN}}/<page>`)
 - [ ] RFC 8288 Link headers present

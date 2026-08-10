@@ -28,6 +28,32 @@ So: invent the example, never the source. An illustration carries no citation, n
 named third party, and no figure dressed as measured. When it needs one to land,
 what it needs is the client's real number, which is a gate.
 
+### The ban has a floor: forbidding invention must not forbid experience
+
+The rule above deletes invented proof. Applied bluntly as "no first person, no
+claims", it also deletes the **first E of E-E-A-T**, and Google's guidance asks
+precisely for the opposite: content that demonstrates "some degree of
+experience, such as with actual use of a product, having actually visited a
+place or communicating what a person experienced".
+
+Measured on one corpus: pages written under a blanket ban carried 0.7 to 1.1
+first-hand markers per 10 000 words, against 4.1 on the reference silo that
+ranks. The blunt ban costs a factor of four on the signal Google says it wants.
+
+The line is not the pronoun, it is who can be asked to back the sentence:
+
+- A **stated professional position** ships. "We refuse to quote a migration on
+  that basis", "in practice the template costs more than the content", "the
+  case we see most often is X". The author answers for it; no third party is
+  invoked; nothing is presented as measured.
+- An **invented house statistic** never ships. "70 % of our clients", "we have
+  delivered 200 projects", "our average gain is 3 weeks". These are client data:
+  they arrive in writing from {{COMPANY}}, with a source, or the sentence goes.
+
+Same first person, opposite act — exactly the illustration/proof edge above,
+applied to the author instead of to a third party. Biographical and track-record
+claims follow the proof rule, never the illustration rule.
+
 ## 2. Voice
 
 Define 5 tone attributes in an "Attribute → In practice" table, aligned with {{VOICE}} and {{FOUNDER}}'s real track record ("on the projects we have run…" = first-hand, never "what the market says"). Anchor it with a Do/Don't table of matching compliant/avoided sentence pairs, not with abstract adjectives.
