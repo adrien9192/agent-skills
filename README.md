@@ -1,6 +1,6 @@
 # agent-skills
 
-Treize skills pour agents de code — Claude Code, Codex, Cursor, et tout runtime compatible avec le standard Agent Skills.
+Quatorze skills pour agents de code — Claude Code, Codex, Cursor, et tout runtime compatible avec le standard Agent Skills.
 
 Elles ne sont pas théoriques : chacune est née d'un problème rencontré en production sur un parc d'une vingtaine de projets Next.js et Astro, et sert quotidiennement.
 
@@ -80,13 +80,18 @@ Dix skills écrites de zéro. Chacune répond à une question précise : *qu'est
 
 ## Ce que j'ai adapté
 
-Trois skills dérivées de la **méthodologie APEX** (Analyze · Plan · Execute · eXamine). La méthode n'est pas de moi ; l'adaptation, oui.
+Quatre skills adaptées à un environnement de travail précis :
 
 | Skill | Adaptation |
 |---|---|
-| `apex-doc` | Rapports, analyses, audits, mémos, propositions commerciales |
-| `apex-decision` | Choix entre options — la sortie est une recommandation, pas un comparatif |
-| `apex-brief` | Briefing de réunion factuel, multi-sources |
+| `apex-doc` | Méthodologie APEX pour rapports, analyses, audits, mémos et propositions commerciales |
+| `apex-decision` | Méthodologie APEX pour choisir : la sortie est une recommandation, pas un comparatif |
+| `apex-brief` | Méthodologie APEX pour un briefing de réunion factuel et multi-sources |
+| `build-site` | Orchestrateur Adrien : stack, sources, routes publiques/produit, gates de capacité/risque et cible local/preview/production |
+
+`build-site` n'est pas autonome : il suppose le catalogue de dépendances nommé dans
+`ROUTING.md` et `FIRST-RUN.md`. Cette distribution publique n'en embarque qu'une partie. Un
+owner requis absent bloque la lane concernée ; il ne doit jamais être improvisé.
 
 ---
 
