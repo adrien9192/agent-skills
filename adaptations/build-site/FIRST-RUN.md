@@ -66,6 +66,9 @@ authenticated product UI, auth, backend/data, billing, AI, workflows, performanc
 production verification. Every optional owner is marked `if available`. Absence has only two valid
 outcomes:
 
+1. use the bundled fallback named in `ROUTING.md`; or
+2. keep the gate `blocked` and report it.
+
 When `security-review` is absent, `architecture-review` is the explicit fallback, with trust-boundary, authorization and negative-path probes; the report must not claim that the dedicated security skill ran.
 
 The browser integration is a tool rather than a skill. Without a rendered-page browser probe there is no visual-fidelity claim.
