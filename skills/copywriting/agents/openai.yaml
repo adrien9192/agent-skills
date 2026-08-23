@@ -1,0 +1,6 @@
+interface:
+  display_name: "Copywriting"
+  short_description: "Sourced persuasive page copy"
+  default_prompt: "Use $copywriting to draft page copy with traceable factual claims."
+policy:
+  allow_implicit_invocation: true

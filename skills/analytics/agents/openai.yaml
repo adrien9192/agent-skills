@@ -1,0 +1,6 @@
+interface:
+  display_name: "Analytics"
+  short_description: "Evidence-led measurement design"
+  default_prompt: "Use $analytics to design measurement with sourced business assumptions and explicit unknowns."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Email Sequences"
+  short_description: "Evidence-led lifecycle email sequences"
+  default_prompt: "Use $emails to draft this sequence without inventing claims, proof, or customer facts."
+policy:
+  allow_implicit_invocation: true

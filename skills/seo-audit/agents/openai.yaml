@@ -1,0 +1,6 @@
+interface:
+  display_name: "SEO Audit"
+  short_description: "Evidence-led technical SEO diagnosis"
+  default_prompt: "Use $seo-audit to audit SEO issues and trace every factual finding."
+policy:
+  allow_implicit_invocation: true

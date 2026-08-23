@@ -1,0 +1,6 @@
+interface:
+  display_name: "CRO"
+  short_description: "Evidence-led conversion optimization"
+  default_prompt: "Use $cro to improve this page using traceable evidence and bounded hypotheses."
+policy:
+  allow_implicit_invocation: true
