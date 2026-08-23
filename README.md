@@ -72,7 +72,7 @@ Dix skills écrites de zéro. Chacune répond à une question précise : *qu'est
 
 **Le problème.** Une maquette vide met la pression. Les chiffres, témoignages, prix et années d'ancienneté que le client n'a jamais fournis finissent par être comblés au plausible, et partent en production.
 
-**Ce qu'elle fait.** Impose un **gate** : toute donnée absente reste un item ouvert que seul un écrit du client referme. Un chiffre dicté à l'oral, une page LinkedIn ou un « je vous fais confiance » n'en referment aucun. Couvre l'intake, le choix Astro/Next, le SEO local, le GEO et la QA de déploiement.
+**Ce qu'elle fait.** Impose un **gate** : toute donnée absente reste un item ouvert que seul un écrit du client referme. Un chiffre dicté à l'oral, une page LinkedIn ou un « je vous fais confiance » n'en referment aucun. Couvre l'intake, le choix Astro/Next, le SEO local, le GEO et la QA de déploiement. Une branche optionnelle traite le scrollytelling sans ajouter un second moteur : courbe émotionnelle, grammaire de page, empreinte inter-projets, encodage vidéo de scrub et audit temporel.
 
 **Ce qu'elle change.** Quand la donnée manque, c'est le bloc qui sort de la maquette, pas la vérité qui s'adapte à la maquette.
 

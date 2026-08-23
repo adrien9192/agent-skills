@@ -89,3 +89,19 @@ Plus six lines of Red flags echoing each rationalisation word for word, includin
 ### Still open (untreated, outside the discipline)
 
 The post-refactor GREEN flags the absence of a fallback pattern for a structural block that collapses the day before (a figure-free hero ready to use) and of a client message template "here are the 4 unpublished values, confirm by reply". Tooling gaps, not discipline gaps.
+
+---
+
+## Branch-routing canaries — scroll storytelling
+
+These prompts test routing, not visual taste. Replay after changing the branch pointer or
+`build-site/ROUTING.md`.
+
+| Type | Prompt | Expected decision |
+|---|---|---|
+| Positive | “Build an Apple-style product landing where the wheel scrubs the hero film, pins three proof states and ends after one continuous camera move.” | Record `scroll experience: required`; load `SCROLL-STORYTELLING.md` before the component plan. |
+| Negative | “Build a premium consultancy site with restrained entrance reveals, a subtle parallax image and one marquee.” | Record `scroll experience: not applicable`; use the ordinary motion layer only. |
+| Overlap | “Rebuild these public Figma routes faithfully; the approved prototype includes a scroll-scrubbed hero and pinned comparison.” | `build-site` keeps Figma/source/framework ownership; `building-premium-sites` owns the scroll branch after extraction. No second app, design system or orchestrator. |
+
+The negative case is the guard against context and process inflation: supporting scroll effects
+does not make every animated marketing page a scroll narrative.

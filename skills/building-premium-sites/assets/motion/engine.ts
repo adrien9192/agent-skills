@@ -275,6 +275,8 @@ function routeEntrance() {
 
 export function init(): () => void {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionAudit = (window as Window & { __BUILD_SITE_MOTION_AUDIT__?: boolean })
+    .__BUILD_SITE_MOTION_AUDIT__ === true;
   if (reduced) {
     // Autoplaying explainer videos honour the reduced-motion preference too.
     document.querySelectorAll<HTMLVideoElement>('video[data-explainer]').forEach((video) => {
@@ -283,8 +285,10 @@ export function init(): () => void {
       video.controls = true;
     });
   }
-  // navigator.webdriver = QA / Axe captures: jump to the final state, zero animation.
-  if (reduced || navigator.webdriver) return () => {};
+  // Ordinary QA / Axe captures stay deterministic. The dedicated scroll audit
+  // sets this flag before application code loads so it can exercise the real
+  // timeline without weakening the default webdriver guard.
+  if (reduced || (navigator.webdriver && !motionAudit)) return () => {};
 
   const fine = window.matchMedia('(pointer: fine)').matches;
   ensureLenis();

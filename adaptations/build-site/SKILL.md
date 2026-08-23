@@ -249,6 +249,11 @@ Implement observed/approved interaction models only.
 
 Motion must respect reduced motion, keyboard interaction, performance and layout stability.
 
+When scroll itself carries narrative meaning, record the dedicated capability gate from
+`ROUTING.md`; the public implementation lane then follows
+`building-premium-sites/SCROLL-STORYTELLING.md`. Ordinary reveals, parallax and entrance
+motion do not trigger that branch.
+
 Do not add GSAP/Lenis or React merely because a skill supports them. Add dependencies only when the design/behavior actually requires them and native CSS/browser behavior is insufficient.
 
 ## 16. Execute triggered capability and risk gates

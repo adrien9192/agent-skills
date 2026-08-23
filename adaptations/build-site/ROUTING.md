@@ -40,6 +40,10 @@ Add one row per applicable or explicitly rejected gate to `docs/site-plan.md`:
 
 Priority remains: explicit instruction → repository invariants → existing stack → approved Figma → approved written content → live migration evidence → specialist defaults.
 
+The source gate ends at extraction. A correct decoder, token inventory or
+durable asset export cannot satisfy composed-render fidelity. When a concrete
+reference exists, add a separate render-fidelity gate using `FIDELITY.md`.
+
 ## 2. Surface gate
 
 ### Public marketing routes
@@ -81,6 +85,7 @@ Apply only rows evidenced by the brief, existing code or approved design.
 | Upgrade/paywall surface | `paywalls` if available | trigger, entitlement truth and recovery path |
 | Analytics requested | `analytics` | small event contract tied to decisions; consent requirements recorded |
 | New observable logic, API, auth, billing or data contract | `test-driven-development` | a failing behavioral test first, then targeted green proof |
+| Scroll is explicitly the narrative timeline (scrubbed media, pinned story states, continuous journey) | `building-premium-sites`, branch `SCROLL-STORYTELLING.md` | feeling curve, one peak, grammar and bans, fingerprint check, asset route, semantic fallback, desktop/mobile/reduced-motion contact sheets |
 | Missing generated image, video or app icon explicitly requested | `image`, `video` or `app-icon` if available | approved, licensed asset in a durable project path |
 
 Before using a framework, provider, CLI or SDK whose current behavior matters, invoke `read-the-damn-docs` if available and read primary current documentation. Figma reference code never outranks the repository stack.
@@ -91,8 +96,9 @@ Before using a framework, provider, CLI or SDK whose current behavior matters, i
 |---|---|---|
 | User input, API route, auth, secrets, upload, payment or sensitive data | `security-review` if available; otherwise `architecture-review` plus the explicit trust-boundary and negative-path checks in this row | no unresolved exploitable blocker; inputs, authz, secrets and failure paths exercised; never claim the dedicated security skill ran when it did not |
 | Performance target, regression risk, significant hydration/media/font work | `benchmark` if available | before/after or budget measurement on the affected routes |
-| Local rendered application | `webapp-testing` if available, otherwise the available browser tool | key flows executed; console/network checked; screenshots captured |
-| Preview or deployed URL | `browser-qa` if available, otherwise the available browser tool | smoke, interaction, responsive and visual verdict |
+| Approved visual reference or fidelity claim | `implement-figma` owns reference mapping; `build-site` owns the final verdict with the available browser/comparison tools | `FIDELITY.md` contract recorded before implementation; comparator observed red; every referenced full page and named section passes dimensions, raw/masked metrics, geometry and state probes |
+| Local rendered application | `webapp-testing` if available, otherwise the available browser tool | key flows executed; console/network checked; visible media settled; screenshots captured at the contract widths |
+| Preview or deployed URL | `browser-qa` if available, otherwise the available browser tool | deployment ID, source commit and intended alias verified; smoke, interaction and responsive probes pass; when fidelity is claimed, deployed screenshots pass `FIDELITY.md` parity against the validated local screenshots |
 | Public new/rebuilt routes | `auditing-websites`, mode `pre-launch` | no P0; remaining findings assigned or accepted explicitly |
 | Auth/data/payments/backend production surface | `production-audit` if available | production risks, rollback and operational gaps resolved or explicit |
 | End-to-end product flow crossing UI/API/data | `verification` if available | browser → API → data → response story proven |

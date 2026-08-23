@@ -82,3 +82,16 @@ Plus two Red flags lines quoting both rationalisations word for word.
 ### Still open (untreated, outside the discipline)
 
 Both GREEN runs flagged the same gap: no template for the client message accompanying a truncated report, and no rule for prioritising the fan-out when only partial time remains (which findings to verify first). These are tooling gaps, not discipline gaps — the rule holds without them.
+
+---
+
+## Branch-routing canaries — temporal scroll audit
+
+| Type | Prompt/evidence | Expected decision |
+|---|---|---|
+| Positive | Site plan says `scroll experience: required` and markup contains `[data-scroll-experience]`. | Run ordinary QA plus `audit-scroll.mjs` on desktop, mobile and reduced motion; read all contact sheets. |
+| Negative | Site uses GSAP only for entrance reveals and a magnetic CTA; no scroll timeline gate or contract markup. | Run ordinary animation/video review; do not add the temporal harness. |
+| Overlap | Webdriver capture is static but the approved page contains a scrubbed clip. | Keep static webdriver pass for Axe, then run the dedicated harness with its explicit motion-audit flag. Neither pass substitutes for the other. |
+
+The overlap case prevents a common false conclusion: a deterministic static capture is correct
+for accessibility scanning and incapable of proving a scroll timeline.

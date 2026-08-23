@@ -76,3 +76,22 @@ A premium site built with the sibling skill `building-premium-sites` ships a mot
 | `navigator.webdriver` gating (+ reduced-motion) on the motion engine | audit method | without it, QA captures are non-deterministic → "missing element"/contrast false positives |
 
 `audit-local.mjs` automates part of this (video source 200, poster, muted autoplay); reduced-motion, CLS/LCP and webdriver gating stay a code review (grep the motion engine and the media query). Anything that **writes or modifies** the animation belongs to `building-premium-sites` / `design-taste-frontend`, never to this skill.
+
+### Scroll-timeline branch
+
+When the site plan marks a `scroll experience` gate or rendered markup contains
+`[data-scroll-experience]`, ordinary screenshots are insufficient: each scroll position is a
+different state. Run `assets/audit-scroll.mjs` at desktop, mobile and reduced motion. It sets the
+explicit `window.__BUILD_SITE_MOTION_AUDIT__` flag before application code loads; ordinary Axe
+and screenshot runs do not set it and therefore keep the deterministic webdriver fallback.
+
+The page must expose the contract from
+`building-premium-sites/SCROLL-STORYTELLING.md`: stable acts, cues, scrub videos, pan tracks and
+rendered-state signatures for bespoke fixed stages. The audit fails on dead scroll, cues that
+never reach full opacity, frozen scrub clips, rails without meaningful overflow/travel, runtime
+errors and failed requests. An intentional hold is accepted only while
+`data-scroll-verify-hold="true"` is visibly active.
+
+Read every generated `sheet.png`. Reconcile mechanical findings with the planned feeling curve,
+peak, reduced-motion equivalent, keyboard reachability, mobile crop and dynamic text contrast.
+The harness proves state change; it does not prove composition, pacing or meaning.
