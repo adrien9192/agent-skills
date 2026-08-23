@@ -1,0 +1,6 @@
+interface:
+  display_name: Auditing Websites
+  short_description: Audit web réconcilié, preuve par preuve
+  default_prompt: Audite ce site et réconcilie chaque finding avant scoring.
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: Building Premium Sites
+  short_description: Production du marketing public premium
+  default_prompt: Produis la couche marketing publique selon le cadrage amont.
+policy:
+  allow_implicit_invocation: true

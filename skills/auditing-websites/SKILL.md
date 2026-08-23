@@ -1,6 +1,6 @@
 ---
 name: auditing-websites
-description: Use when auditing an existing marketing, showcase or e-commerce website. Branches - no organic visibility (SEO audit, "personne ne me trouve sur Google"), never cited by ChatGPT or Perplexity (GEO audit), site that does not convert (CRO audit), cannibalised or duplicate pages, internal linking or semantic silo audit, pre-launch quality review, competitor benchmark, verifying a redesign lost no SEO or GEO, site too slow or too JS-heavy ("faut-il migrer vers Astro"). FR and EN.
+description: "Use when an existing marketing, showcase, or e-commerce site needs a bounded technical, SEO, GEO, CRO, design, performance, accessibility, pre-launch, or regression audit with claim-by-claim reconciliation. It is also the evidence-collection subprotocol for Roso. Not for a complete SEO/GEO program, monthly tracking, a Roso report, or rebuilding the site."
 ---
 
 # Auditing websites
@@ -72,7 +72,7 @@ It returns findings already reconciled; steps 4-6 stay with the main thread. Wit
 | A site where scroll carries narrative meaning | Run `assets/audit-scroll.mjs` at desktop, mobile and reduced motion; reconcile dead scroll, cue peaks, clip advance, rail travel and contact sheets against `SCROLL-STORYTELLING.md`. |
 | Performance, JS weight, whether to change framework | Field BEFORE lab: CrUX URL → CrUX origin → if neither exists, that is an audience finding. Bundle weight does not predict CWV impact (measured: 205 KB of JS for 0 ms on LCP). Sequence, thresholds and decision grid: `AUDIT-METHOD.md` §7 |
 | Responsiveness (INP) | Measured through interaction or read from CrUX. A load trace produces none: `AUDIT-METHOD.md` §7.5 |
-| Model routing | Collectors that judge (seo/design/cro/code) = sonnet; mechanical checklists (geo/fact-check/scout) = haiku; scoring and plan = main thread |
+| Capability routing | Collectors that judge need the runtime's strong reasoning tier; mechanical checklists use its fast tier; scoring and plan stay with the main controller |
 
 ## Red flags — STOP
 
