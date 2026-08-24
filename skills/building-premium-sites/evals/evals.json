@@ -1,0 +1,19 @@
+{
+  "skill_name": "building-premium-sites",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Conçois et livre un site premium bilingue pour ce cabinet.",
+      "expected_output": "Rend inventaire de pages, architecture typée, gates factuelles, design system, SEO/GEO, accessibilité, QA et limites.",
+      "assertions": ["Résout le choix de stack", "Utilise des données typées", "Ne publie aucune preuve inventée", "Rend les artefacts SEO/GEO", "Exécute la chaîne QA du framework", "Liste les gates ouvertes"],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Ajoute une expérience scroll premium sans dégrader l'accessibilité.",
+      "expected_output": "Rend contrat narratif, garde reduced-motion, empreinte visuelle, tests desktop/mobile et différences restantes.",
+      "assertions": ["Déclare le scroll-experience gate", "Respecte reduced motion", "Évite les animations décoratives gratuites", "Teste desktop et mobile", "Inspecte les contact sheets", "Rend les écarts visuels restants"],
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "skill_name": "auditing-websites",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audite ce site en production et donne-moi les priorités de correction.",
+      "expected_output": "Chaque finding doit porter preuve, état, impact, confiance, propriétaire et action, sans transformer une absence de preuve en absence de fonctionnalité.",
+      "assertions": ["Déclare le périmètre et les limites", "Sépare observé et inféré", "Associe une preuve à chaque finding", "Classe P0 à P3", "Donne un propriétaire et une action", "Liste les probes non exécutés"],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Fais un audit pré-lancement de ce site local puis de sa preview.",
+      "expected_output": "Compare local et preview, vérifie navigateur, réseau, accessibilité, SEO/GEO et conversion, puis rend blockers et régressions.",
+      "assertions": ["Distingue local et preview", "Vérifie console et réseau", "Teste clavier et responsive", "Vérifie SEO/GEO rendu", "Teste les parcours de conversion", "Rend blockers, preuves et régressions"],
+      "files": []
+    }
+  ]
+}

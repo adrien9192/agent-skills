@@ -1,0 +1,19 @@
+{
+  "skill_name": "test-driven-development",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Corrige le calcul de remise qui accepte actuellement un coupon expiré.",
+      "expected_output": "Montre un test au seam public qui échoue pour la bonne raison, le changement minimal qui le fait passer, puis la suite affectée.",
+      "assertions": ["Nomme le comportement public", "Montre la preuve RED", "Explique pourquoi l'échec est pertinent", "Montre la preuve GREEN", "Exécute la suite affectée", "N'affaiblit aucune assertion"],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Implémente un endpoint idempotent de création de paiement avec TDD.",
+      "expected_output": "Teste le comportement observable et les erreurs aux frontières sans mocker le code possédé, puis rend RED, GREEN et risques.",
+      "assertions": ["Teste l'idempotence via l'API publique", "Mocke seulement une frontière externe si nécessaire", "Évite les assertions sur détails internes", "Montre RED avant production", "Montre GREEN après changement minimal", "Liste les cas encore non couverts"],
+      "files": []
+    }
+  ]
+}
