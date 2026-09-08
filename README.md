@@ -103,6 +103,12 @@ Il affirme qu'un test passe sans l'avoir lancé. Qu'un bug est corrigé sans l'a
 
 Le corollaire vaut pour elles-mêmes : celles qui embarquent un contrôle automatique portent un test de leur propre détection. Un contrôle qui ne trouve jamais rien peut être un contrôle cassé.
 
+## Capacités spécialisées globales
+
+`skills/archify`, `skills/openmaic` et `skills/specialist-artifacts` sont les adaptateurs canoniques ajoutés le 2026-09-08. Les deux premiers sont explicit-only ; le troisième est un petit index de routage vers un diagramme demandé ou une formation demandée, jamais vers le coding ordinaire.
+
+Runtimes externes sur le Mac : [Archify 2.16.0](https://github.com/tt-a1i/archify/releases/tag/v2.16.0) et [OpenMAIC 1.0.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.0.1), inchangés sous `~/.local/share/`. Ce dépôt contient les adaptateurs MIT écrits localement, pas le code upstream ni des modèles. Le lanceur OpenMAIC et l'allowlist OMP appartiennent à `adrien-stack` ; `adrien-poste` distribue les copies. Preuves : `adrien-devkit/capabilities-20260908/`.
+
 ## Licence
 
 MIT — voir `LICENSE`.
