@@ -1,0 +1,6 @@
+interface:
+  display_name: "Shared Working Memory"
+  short_description: "Existing vault, interviews and source-backed memory"
+  default_prompt: "Use $obsidian-vault to retrieve, enrich or audit working memory in the existing vault."
+policy:
+  allow_implicit_invocation: true

@@ -109,6 +109,18 @@ Le corollaire vaut pour elles-mêmes : celles qui embarquent un contrôle automa
 
 Runtimes externes sur le Mac : [Archify 2.16.0](https://github.com/tt-a1i/archify/releases/tag/v2.16.0) et [OpenMAIC 1.0.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.0.1), inchangés sous `~/.local/share/`. Ce dépôt contient les adaptateurs MIT écrits localement, pas le code upstream ni des modèles. Le lanceur OpenMAIC et l'allowlist OMP appartiennent à `adrien-stack` ; `adrien-poste` distribue les copies. Preuves : `adrien-devkit/capabilities-20260908/`.
 
+## Mémoire de travail existante
+
+`skills/obsidian-vault` garde un seul coffre et ajoute quatre parcours à la demande :
+accueil contextuel, entretien consigné, intégration de sources et audit par questions réelles.
+Les références ne sont chargées que pour le parcours choisi. Aucun nouveau hook, service,
+connecteur ou changement de règles globales. Le dossier partagé `~/.agents/skills` sert OMP et
+les hôtes qui le découvrent, dont Orca ; `adrien-poste` en distribue la copie.
+
+Les questions/réponses vont dans l'inbox existante, les faits de projet dans sa note-hub, les
+connaissances transversales sourcées dans la bibliothèque existante. Les originaux et l'historique
+des décisions restent intacts. Résultats des canaris et preuves : `adrien-devkit/second-brain-integration-20260916/`.
+
 ## Licence
 
 MIT — voir `LICENSE`.
