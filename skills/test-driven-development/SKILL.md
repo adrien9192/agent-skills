@@ -55,6 +55,21 @@ Use dependency injection at that boundary. Exercise owned modules together.
 Internal collaborator mocks, private-method assertions, and call-count tests
 couple tests to structure instead of behavior.
 
+## 5. Prove each test can fail for the right reason
+
+Run both edits on every new or kept assertion (from pstack
+`principle-test-behavior-not-implementation`, MIT):
+
+- **Break the behavior** while keeping the structure. If the test still passes, it proves
+  nothing — fix or delete it.
+- **Change the internals** while keeping the behavior. If the test now fails, it is pinned to the
+  implementation — move it to the public seam.
+
+A bad test mostly tests mocks, encodes current implementation details, depends on timing or
+unrelated global state, needs expensive infrastructure for a small fix, or would be deleted right
+after proving the fix. When a failing test is impractical, use the closest executable regression
+check (real command, stored value, replayed input) and say so.
+
 Read [references/test-quality.md](references/test-quality.md) when choosing a
 seam or reviewing a weak test. Read [references/mocking.md](references/mocking.md)
 when an external dependency must be isolated.
